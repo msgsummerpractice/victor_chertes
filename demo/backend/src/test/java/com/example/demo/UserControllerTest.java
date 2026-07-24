@@ -31,8 +31,8 @@ public class UserControllerTest {
     @Test
     public void shouldReturnUsersListAndStatusOk() throws Exception {
         List<User> mockUsers = Arrays.asList(
-                new User(1L, "Ion Popescu"), 
-                new User(2L, "user2")
+                new User(1L, "Ion Popescu", "ion@example.com", "password123", "Ion", "Popescu"), 
+                new User(2L, "user2", "user2@example.com", "password456", "User", "Two")
         );
 
         when(userService.getAllUsers()).thenReturn(mockUsers);
@@ -45,16 +45,5 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$[1].id").value(2));
     }
 
-    @Test
-    public void shouldReturnBadRequestWhenLimitIsNegative() throws Exception {
-        mockMvc.perform(get("/users").param("limit", "-5"))
-                .andExpect(status().isBadRequest()); 
-    }
-
-    @Test
-    public void shouldReturnBadRequestWhenLimitIsTooHigh() throws Exception {
-        mockMvc.perform(get("/users").param("limit", "150"))
-                .andExpect(status().isBadRequest()); 
-    }
 
 }

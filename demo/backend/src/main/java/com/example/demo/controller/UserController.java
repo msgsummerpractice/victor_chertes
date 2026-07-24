@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.List;
+
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -37,11 +38,7 @@ public class UserController {
     
 
     @GetMapping
-    public List<User> getUsers(
-        @RequestParam(required = false,defaultValue = "10")
-        @Min(value = 1, message = "Limit must be at least 1")
-        @Max(value = 100, message = "Limit must be at most 100") 
-        Integer limit) {
+    public List<User> getUsers() {
 
         return userService.getAllUsers();
     }
