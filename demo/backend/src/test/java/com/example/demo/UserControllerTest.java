@@ -2,9 +2,10 @@ package com.example.demo;
 
 import com.example.demo.model.User;
 import com.example.demo.service.UserService;
+import com.example.demo.config.AppSettings;
+import com.example.demo.controller.UserController;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
@@ -17,8 +18,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@SpringBootTest
-@AutoConfigureMockMvc
+@WebMvcTest(UserController.class)
 public class UserControllerTest {
 
     @Autowired
@@ -26,6 +26,9 @@ public class UserControllerTest {
     
     @MockitoBean
     private UserService userService;
+
+    @MockitoBean
+    private AppSettings appSettings;
 
     
     @Test

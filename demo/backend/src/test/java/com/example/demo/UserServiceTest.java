@@ -7,9 +7,10 @@ import java.util.Optional;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import org.springframework.boot.test.context.SpringBootTest;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -20,7 +21,6 @@ import com.example.demo.service.UserServiceImpl;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.model.User;
 
-@SpringBootTest
 @ExtendWith(MockitoExtension.class)
 public class UserServiceTest {
 
@@ -78,6 +78,22 @@ public class UserServiceTest {
 
         assertEquals(existingUser.getEmail(), result.getEmail());
         assertEquals(noileDate.getUsername(), result.getUsername());
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenUpdatingNonExistingUser() {
+        User noileDate = new User(null, "nume_nou", "nou@email.com", "pass", "Vasile", "Pop");
+
+        when(userRepository.findById(1L)).thenReturn(Optional.empty());
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            userService.updateUser(1L,noileDate);
+        });
+
+        assertEquals("User not found with id", exception.getMessage());
+
+        verify(userRepository, never()).save(any(User.class));
+        
     }
 
     @Test
