@@ -1,11 +1,13 @@
 package com.example.demo;
 
-import com.example.demo.model.User;
 import com.example.demo.service.UserService;
 import com.example.demo.config.AppSettings;
 import com.example.demo.controller.UserController;
+import com.example.demo.dto.UserResponse;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
@@ -14,6 +16,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import java.util.Arrays;
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -33,19 +36,21 @@ public class UserControllerTest {
     
     @Test
     public void shouldReturnUsersListAndStatusOk() throws Exception {
-        List<User> mockUsers = Arrays.asList(
-                new User(1L, "Ion Popescu", "ion@example.com", "password123", "Ion", "Popescu"), 
-                new User(2L, "user2", "user2@example.com", "password456", "User", "Two")
+        List<UserResponse> mockUsers = Arrays.asList(
+                new UserResponse(1L, "Ion Popescu", "ion@example.com", "Ion", "Popescu"), 
+                new UserResponse(2L, "user2", "user2@example.com", "User", "Two")
         );
 
-        when(userService.getAllUsers()).thenReturn(mockUsers);
+        Page<UserResponse> mockPage = new PageImpl<>(mockUsers);
+
+        when(userService.getAllUsers(anyInt(),anyInt())).thenReturn(mockPage);
 
         mockMvc.perform(get("/users"))
                 .andDo(print())
                 .andExpect(status().isOk()) 
                 .andExpect(content().contentType("application/json")) 
-                .andExpect(jsonPath("$[0].username").value("Ion Popescu")) 
-                .andExpect(jsonPath("$[1].id").value(2));
+                .andExpect(jsonPath("$.content[0].username").value("Ion Popescu")) 
+                .andExpect(jsonPath("$.content[1].id").value(2));
     }
 
 
