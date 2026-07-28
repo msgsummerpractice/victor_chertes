@@ -16,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,8 +26,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import java.util.Map;
 
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -60,6 +59,7 @@ public class UserController {
             MediaType.APPLICATION_XML_VALUE
     })
     @ApiResponse(responseCode = "200", description = "When a page of users is returned")
+    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
     public ResponseEntity<Page<UserResponseDTO>> getUsers(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
@@ -72,6 +72,7 @@ public class UserController {
             MediaType.APPLICATION_XML_VALUE
     })
     @ApiResponse(responseCode = "200", description = "When a user is returned")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<UserResponseDTO> getUserById(@PathVariable Long id) {
         UserResponseDTO user = userService.getUserById(id)
                 .orElseThrow(() -> new RuntimeException("User not found with id " + id));
@@ -80,6 +81,7 @@ public class UserController {
 
     @PostMapping
     @ApiResponse(responseCode = "201", description = "When a user is saved")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<UserResponseDTO> createUser(@Valid @RequestBody UserRequestDTO request) {
         UserResponseDTO createdUser = userService.createUser(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
@@ -87,6 +89,7 @@ public class UserController {
 
     @PutMapping("/{id}")
     @ApiResponse(responseCode = "200", description = "When a user is updated")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<UserResponseDTO> updateUser(@PathVariable Long id,
             @Valid @RequestBody UpdateUserRequestDTO userDetails) {
         UserResponseDTO updatedUser = userService.updateUser(id, userDetails);
@@ -95,6 +98,7 @@ public class UserController {
 
     @PatchMapping("/{id}")
     @ApiResponse(responseCode = "200", description = "When a user is patched")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<UserResponseDTO> patchUser(@PathVariable Long id,
             @Valid @RequestBody PatchUserRequestDTO request) {
         UserResponseDTO patchedUser = userService.patchUser(id, request);
@@ -103,6 +107,7 @@ public class UserController {
 
     @DeleteMapping("/{id}")
     @ApiResponse(responseCode = "204", description = "When a user is deleted")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         userService.getUserById(id)
                 .orElseThrow(() -> new RuntimeException("User not found with id " + id));

@@ -1,6 +1,8 @@
 package com.example.demo.service;
 
+import com.example.demo.model.Role;
 import com.example.demo.model.User;
+import com.example.demo.repository.RoleRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.mapper.UserMapper;
 import com.example.demo.dto.UpdateUserRequestDTO;
@@ -9,7 +11,6 @@ import com.example.demo.dto.UserResponseDTO;
 import com.example.demo.dto.PatchUserRequestDTO;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -20,18 +21,23 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Service
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final PasswordEncoder passwordEncoder;
+    private final RoleRepository roleRepository;
 
     private static Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
-    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper) {
+    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper, PasswordEncoder passwordEncoder,RoleRepository roleRepository) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
+        this.passwordEncoder = passwordEncoder;
+        this.roleRepository = roleRepository;
     }
 
     @Override
@@ -53,6 +59,13 @@ public class UserServiceImpl implements UserService {
         }
 
         User user = userMapper.toEntity(request);
+
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+
+        Role userRole = roleRepository.findByName("ROLE_USER")
+                .orElseThrow(() -> new RuntimeException("ROLE_USER not found"));
+        user.getRoles().add(userRole);
+
         User savedUser = userRepository.save(user);
         return userMapper.toResponse(savedUser);
     }
@@ -79,6 +92,11 @@ public class UserServiceImpl implements UserService {
             }
 
             userMapper.updateEntityFromDto(request, existingUser);
+
+            if (request.getPassword() != null && !request.getPassword().isBlank()) {
+                 existingUser.setPassword(passwordEncoder.encode(request.getPassword()));
+            }
+
             User updatedUser = userRepository.save(existingUser);
 
             return userMapper.toResponse(updatedUser);
@@ -136,7 +154,7 @@ public class UserServiceImpl implements UserService {
             }
             
             if (updates.getPassword() != null) {
-                existingUser.setPassword(updates.getPassword());
+                existingUser.setPassword(passwordEncoder.encode(updates.getPassword()));
             }
             if (updates.getFirstname() != null) {
                 existingUser.setFirstName(updates.getFirstname());
