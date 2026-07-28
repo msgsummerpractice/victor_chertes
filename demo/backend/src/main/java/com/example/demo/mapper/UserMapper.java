@@ -3,14 +3,14 @@ package com.example.demo.mapper;
 import com.example.demo.model.User;
 import org.springframework.stereotype.Component;
 
-import com.example.demo.dto.UpdateUserRequest;
-import com.example.demo.dto.UserRequest;
-import com.example.demo.dto.UserResponse;
+import com.example.demo.dto.UpdateUserRequestDTO;
+import com.example.demo.dto.UserRequestDTO;
+import com.example.demo.dto.UserResponseDTO;
 
 @Component
 public class UserMapper {
-    
-    public User toEntity(UserRequest request) {
+
+    public User toEntity(UserRequestDTO request) {
         if (request == null) {
             return null;
         }
@@ -19,36 +19,36 @@ public class UserMapper {
         user.setUsername(request.getUsername());
         user.setEmail(request.getEmail());
         user.setPassword(request.getPassword());
-        user.setFirstname(request.getFirstname());
-        user.setLastname(request.getLastname());
+        user.setFirstName(request.getFirstName());
+        user.setLastName(request.getLastName());
 
         return user;
     }
 
-    public UserResponse toResponse(User user) {
-        if(user == null) {
+    public UserResponseDTO toResponse(User user) {
+        if (user == null) {
             return null;
         }
 
-        UserResponse response = new UserResponse();
+        UserResponseDTO response = new UserResponseDTO();
         response.setId(user.getId());
         response.setUsername(user.getUsername());
         response.setEmail(user.getEmail());
-        response.setFirstname(user.getFirstname());
-        response.setLastname(user.getLastname());
+        response.setFirstName(user.getFirstName());
+        response.setLastName(user.getLastName());
 
         return response;
     }
 
-    public void updateEntityFromDto(UpdateUserRequest request, User existingUser) {
-        if(request == null || existingUser == null) {
+    public void updateEntityFromDto(UpdateUserRequestDTO request, User existingUser) {
+        if (request == null || existingUser == null) {
             return;
         }
 
         existingUser.setUsername(request.getUsername());
         existingUser.setEmail(request.getEmail());
         existingUser.setPassword(request.getPassword());
-        existingUser.setFirstname(request.getFirstname());
-        existingUser.setLastname(request.getLastname());
+        existingUser.setFirstName(request.getFirstName());
+        existingUser.setLastName(request.getLastName());
     }
 }

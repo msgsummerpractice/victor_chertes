@@ -3,9 +3,10 @@ package com.example.demo.service;
 import com.example.demo.model.User;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.mapper.UserMapper;
-import com.example.demo.dto.UpdateUserRequest;
-import com.example.demo.dto.UserRequest;
-import com.example.demo.dto.UserResponse;
+import com.example.demo.dto.UpdateUserRequestDTO;
+import com.example.demo.dto.UserRequestDTO;
+import com.example.demo.dto.UserResponseDTO;
+import com.example.demo.dto.PatchUserRequestDTO;
 
 import java.util.List;
 import java.util.Map;
@@ -28,21 +29,21 @@ public class UserServiceImpl implements UserService {
 
     private static Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
-    public UserServiceImpl(UserRepository userRepository,UserMapper userMapper) {
+    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
     }
 
     @Override
-    public Page<UserResponse> getAllUsers(int page, int size) {
+    public Page<UserResponseDTO> getAllUsers(int page, int size) {
         logger.info("Fetching all users from the repository");
-        Pageable pageable = PageRequest.of(page,size);
+        Pageable pageable = PageRequest.of(page, size);
         Page<User> userPage = userRepository.findAll(pageable);
         return userPage.map(userMapper::toResponse);
     }
 
     @Override
-    public UserResponse createUser(UserRequest request) {
+    public UserResponseDTO createUser(UserRequestDTO request) {
         if (userRepository.findByUsername(request.getUsername()).isPresent()) {
             throw new RuntimeException("Username '" + request.getUsername() + "' is already taken.");
         }
@@ -57,18 +58,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<UserResponse> getUserById(Long id) {
-        return userRepository.findById(id) 
+    public Optional<UserResponseDTO> getUserById(Long id) {
+        return userRepository.findById(id)
                 .map(userMapper::toResponse);
 
     }
 
     @Override
-    public UserResponse updateUser(Long id, UpdateUserRequest request) {
+    public UserResponseDTO updateUser(Long id, UpdateUserRequestDTO request) {
         return userRepository.findById(id).map(existingUser -> {
             Optional<User> userWithSameUsername = userRepository.findByUsername(request.getUsername());
             if (userWithSameUsername.isPresent() && !userWithSameUsername.get().getId().equals(id)) {
-                throw new RuntimeException("Username '" + request.getUsername() + "' is already taken by another user.");
+                throw new RuntimeException(
+                        "Username '" + request.getUsername() + "' is already taken by another user.");
             }
 
             Optional<User> userWithSameEmail = userRepository.findByEmail(request.getEmail());
@@ -76,9 +78,9 @@ public class UserServiceImpl implements UserService {
                 throw new RuntimeException("Email '" + request.getEmail() + "' is already in use by another user.");
             }
 
-            userMapper.updateEntityFromDto(request,existingUser);
+            userMapper.updateEntityFromDto(request, existingUser);
             User updatedUser = userRepository.save(existingUser);
-            
+
             return userMapper.toResponse(updatedUser);
         }).orElseThrow(() -> new RuntimeException("User not found with id " + id));
     }
@@ -89,23 +91,23 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<UserResponse> getUserByUsername(String username) {
+    public Optional<UserResponseDTO> getUserByUsername(String username) {
         return userRepository.findByUsername(username)
-            .map(userMapper::toResponse);
+                .map(userMapper::toResponse);
     }
 
     @Override
-    public Optional<UserResponse> getUserByEmail(String email) {
+    public Optional<UserResponseDTO> getUserByEmail(String email) {
         return userRepository.findByEmail(email)
-            .map(userMapper::toResponse);
+                .map(userMapper::toResponse);
     }
 
     @Override
-    public List<UserResponse> searchTop10Users(String keyword) {
+    public List<UserResponseDTO> searchTop10Users(String keyword) {
         return userRepository.findTop10ByUsernameContainingIgnoreCaseOrderByUsernameAsc(keyword)
-            .stream()
-            .map(userMapper::toResponse)
-            .collect(Collectors.toList());
+                .stream()
+                .map(userMapper::toResponse)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -114,30 +116,34 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponse patchUser(Long id, Map<String, Object> updates) {
+    public UserResponseDTO patchUser(Long id, PatchUserRequestDTO updates) {
         return userRepository.findById(id).map(existingUser -> {
             
-            if (updates.containsKey("username")) {
-                String newUsername = (String) updates.get("username");
-                Optional<User> userWithSameUsername = userRepository.findByUsername(newUsername);
+            if (updates.getUsername() != null) {
+                Optional<User> userWithSameUsername = userRepository.findByUsername(updates.getUsername());
                 if (userWithSameUsername.isPresent() && !userWithSameUsername.get().getId().equals(id)) {
-                    throw new RuntimeException("Username '" + newUsername + "' is already taken.");
+                    throw new RuntimeException("Username '" + updates.getUsername() + "' is already taken.");
                 }
-                existingUser.setUsername(newUsername);
+                existingUser.setUsername(updates.getUsername());
             }
             
-            if (updates.containsKey("email")) {
-                String newEmail = (String) updates.get("email");
-                Optional<User> userWithSameEmail = userRepository.findByEmail(newEmail);
+            if (updates.getEmail() != null) {
+                Optional<User> userWithSameEmail = userRepository.findByEmail(updates.getEmail());
                 if (userWithSameEmail.isPresent() && !userWithSameEmail.get().getId().equals(id)) {
-                    throw new RuntimeException("Email '" + newEmail + "' is already in use.");
+                    throw new RuntimeException("Email '" + updates.getEmail() + "' is already in use.");
                 }
-                existingUser.setEmail(newEmail);
+                existingUser.setEmail(updates.getEmail());
             }
             
-            if (updates.containsKey("password")) existingUser.setPassword((String) updates.get("password"));
-            if (updates.containsKey("firstname")) existingUser.setFirstname((String) updates.get("firstname"));
-            if (updates.containsKey("lastname")) existingUser.setLastname((String) updates.get("lastname"));
+            if (updates.getPassword() != null) {
+                existingUser.setPassword(updates.getPassword());
+            }
+            if (updates.getFirstname() != null) {
+                existingUser.setFirstName(updates.getFirstname());
+            }
+            if (updates.getLastname() != null) {
+                existingUser.setLastName(updates.getLastname());
+            }
             
             User updatedUser = userRepository.save(existingUser);
             return userMapper.toResponse(updatedUser);

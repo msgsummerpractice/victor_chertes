@@ -6,9 +6,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 
 import com.example.demo.config.AppSettings;
-import com.example.demo.dto.UpdateUserRequest;
-import com.example.demo.dto.UserRequest;
-import com.example.demo.dto.UserResponse;
+import com.example.demo.dto.PatchUserRequestDTO;
+import com.example.demo.dto.UpdateUserRequestDTO;
+import com.example.demo.dto.UserRequestDTO;
+import com.example.demo.dto.UserResponseDTO;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -59,10 +60,10 @@ public class UserController {
             MediaType.APPLICATION_XML_VALUE
     })
     @ApiResponse(responseCode = "200", description = "When a page of users is returned")
-    public ResponseEntity<Page<UserResponse>> getUsers(
+    public ResponseEntity<Page<UserResponseDTO>> getUsers(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
-        Page<UserResponse> users = userService.getAllUsers(page, size);
+        Page<UserResponseDTO> users = userService.getAllUsers(page, size);
         return ResponseEntity.ok(users);
     }
 
@@ -70,33 +71,33 @@ public class UserController {
             MediaType.APPLICATION_JSON_VALUE,
             MediaType.APPLICATION_XML_VALUE
     })
-    @ApiResponse(responseCode = "200",description = "When a user is returned")
-    public ResponseEntity<UserResponse> getUserById(@PathVariable Long id) {
-        UserResponse user = userService.getUserById(id)
+    @ApiResponse(responseCode = "200", description = "When a user is returned")
+    public ResponseEntity<UserResponseDTO> getUserById(@PathVariable Long id) {
+        UserResponseDTO user = userService.getUserById(id)
                 .orElseThrow(() -> new RuntimeException("User not found with id " + id));
         return ResponseEntity.ok(user);
     }
 
     @PostMapping
     @ApiResponse(responseCode = "201", description = "When a user is saved")
-    public ResponseEntity<UserResponse> createUser(@Valid @RequestBody UserRequest request) {
-        UserResponse createdUser = userService.createUser(request);
+    public ResponseEntity<UserResponseDTO> createUser(@Valid @RequestBody UserRequestDTO request) {
+        UserResponseDTO createdUser = userService.createUser(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }
 
     @PutMapping("/{id}")
     @ApiResponse(responseCode = "200", description = "When a user is updated")
-    public ResponseEntity<UserResponse> updateUser(@PathVariable Long id,
-            @Valid @RequestBody UpdateUserRequest userDetails) {
-        UserResponse updatedUser = userService.updateUser(id, userDetails);
+    public ResponseEntity<UserResponseDTO> updateUser(@PathVariable Long id,
+            @Valid @RequestBody UpdateUserRequestDTO userDetails) {
+        UserResponseDTO updatedUser = userService.updateUser(id, userDetails);
         return ResponseEntity.ok(updatedUser);
     }
 
     @PatchMapping("/{id}")
     @ApiResponse(responseCode = "200", description = "When a user is patched")
-    public ResponseEntity<UserResponse> patchUser(@PathVariable Long id,
-            @Valid @RequestBody Map<String, Object> updates) {
-        UserResponse patchedUser = userService.patchUser(id, updates);
+    public ResponseEntity<UserResponseDTO> patchUser(@PathVariable Long id,
+            @Valid @RequestBody PatchUserRequestDTO request) {
+        UserResponseDTO patchedUser = userService.patchUser(id, request);
         return ResponseEntity.ok(patchedUser);
     }
 
