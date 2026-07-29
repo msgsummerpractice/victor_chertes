@@ -23,6 +23,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import org.springframework.util.StringUtils;
+
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -93,7 +95,7 @@ public class UserServiceImpl implements UserService {
 
             userMapper.updateEntityFromDto(request, existingUser);
 
-            if (request.getPassword() != null && !request.getPassword().isBlank()) {
+            if (StringUtils.hasText(request.getPassword())) {
                  existingUser.setPassword(passwordEncoder.encode(request.getPassword()));
             }
 
@@ -137,7 +139,7 @@ public class UserServiceImpl implements UserService {
     public UserResponseDTO patchUser(Long id, PatchUserRequestDTO updates) {
         return userRepository.findById(id).map(existingUser -> {
             
-            if (updates.getUsername() != null) {
+            if (StringUtils.hasText(updates.getUsername())) {
                 Optional<User> userWithSameUsername = userRepository.findByUsername(updates.getUsername());
                 if (userWithSameUsername.isPresent() && !userWithSameUsername.get().getId().equals(id)) {
                     throw new RuntimeException("Username '" + updates.getUsername() + "' is already taken.");
@@ -145,7 +147,7 @@ public class UserServiceImpl implements UserService {
                 existingUser.setUsername(updates.getUsername());
             }
             
-            if (updates.getEmail() != null) {
+            if (StringUtils.hasText(updates.getEmail())) {
                 Optional<User> userWithSameEmail = userRepository.findByEmail(updates.getEmail());
                 if (userWithSameEmail.isPresent() && !userWithSameEmail.get().getId().equals(id)) {
                     throw new RuntimeException("Email '" + updates.getEmail() + "' is already in use.");
@@ -153,13 +155,13 @@ public class UserServiceImpl implements UserService {
                 existingUser.setEmail(updates.getEmail());
             }
             
-            if (updates.getPassword() != null) {
+            if (StringUtils.hasText(updates.getPassword())) {
                 existingUser.setPassword(passwordEncoder.encode(updates.getPassword()));
             }
-            if (updates.getFirstname() != null) {
+            if (StringUtils.hasText(updates.getFirstname())) {
                 existingUser.setFirstName(updates.getFirstname());
             }
-            if (updates.getLastname() != null) {
+            if (StringUtils.hasText(updates.getLastname())) {
                 existingUser.setLastName(updates.getLastname());
             }
             
