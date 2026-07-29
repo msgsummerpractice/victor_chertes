@@ -14,15 +14,15 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.example.demo.service.UserServiceImpl;
+import com.example.demo.repository.RoleRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.model.User;
 import com.example.demo.dto.UserResponseDTO;
@@ -36,6 +36,12 @@ public class UserServiceTest {
     @Mock
     private UserRepository userRepository;
 
+    @Mock
+    private RoleRepository roleRepository;
+
+    @Mock 
+    private PasswordEncoder passwordEncoder;
+
     private UserMapper userMapper;
     private UserServiceImpl userService;
 
@@ -43,7 +49,7 @@ public class UserServiceTest {
     void setUp() {
         userMapper = new UserMapper();
         
-        userService = new UserServiceImpl(userRepository, userMapper);
+        userService = new UserServiceImpl(userRepository, userMapper, passwordEncoder,roleRepository);
     }
 
     @Test
@@ -62,9 +68,11 @@ public class UserServiceTest {
     @Test
     public void shouldCreatenewUser() {
         UserRequestDTO newUser = new UserRequestDTO("alex_dev", "alex@example.com", "pass", "Alex", "Pop");
-        User savedUser = new User(1L, "alex_dev", "alex@example.com", "pass", "Alex", "Pop");
+        User savedUser = new User(1L, "alex_dev", "alex@example.com", "encoded_pass", "Alex", "Pop");
 
-        User expectedEntityToSave = new User(null, "alex_dev", "alex@example.com", "pass", "Alex", "Pop");
+        when(passwordEncoder.encode("pass")).thenReturn("encoded_pass");
+
+        User expectedEntityToSave = new User(null, "alex_dev", "alex@example.com", "encoded_pass", "Alex", "Pop");
 
         when(userRepository.save(expectedEntityToSave)).thenReturn(savedUser);
 
@@ -91,6 +99,8 @@ public class UserServiceTest {
 
         UpdateUserRequestDTO newData = new UpdateUserRequestDTO("nume_nou", "nou@email.com", "pass", "Vasile", "Pop");
 
+        when(passwordEncoder.encode("pass")).thenReturn("encoded_pass");
+        
         when(userRepository.findById(1L)).thenReturn(Optional.of(existingUser));
         when(userRepository.save(existingUser)).thenReturn(existingUser);
 
@@ -136,5 +146,4 @@ public class UserServiceTest {
         assertEquals(2, result.size());
         assertEquals("a_user", result.get(0).getUsername());
     }
-
 }
