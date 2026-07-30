@@ -16,11 +16,19 @@
            routerLinkActive="!text-blue-300">
            Home
         </a>
+        <div *appIfAuth="!authService.isAuthenticated()">
+          <a mat-button 
+            routerLink="/login"
+            routerLinkActive="!text-blue-300">
+            Login
+          </a>
+        </div>
+        
       </div>
       
     </div>
 
-    <div *appIfAuth="isUserLoggedIn()">
+    <div *appIfAuth="authService.isAuthenticated()">
       <button mat-icon-button routerLink="/login" aria-label="User login">
         <mat-icon>person</mat-icon>
       </button>
