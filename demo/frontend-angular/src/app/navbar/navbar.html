@@ -11,14 +11,17 @@
       <span class="font-bold text-xl tracking-wide mr-4">DogApp</span>
       
       <div class="hidden md:flex gap-2">
-        <a mat-button href="#">Home</a>
-        <a mat-button href="#">Gallery</a>
+        <a mat-button 
+           routerLink="/home"
+           routerLinkActive="!text-blue-300">
+           Home
+        </a>
       </div>
       
     </div>
 
     <div *appIfAuth="isUserLoggedIn()">
-      <button mat-icon-button aria-label="User login">
+      <button mat-icon-button routerLink="/login" aria-label="User login">
         <mat-icon>person</mat-icon>
       </button>
     </div>
@@ -30,9 +33,5 @@
   <a mat-menu-item href="#">
     <mat-icon>home</mat-icon>
     <span>Home</span>
-  </a>
-  <a mat-menu-item href="#">
-    <mat-icon>pets</mat-icon>
-    <span>Gallery</span>
   </a>
 </mat-menu>
