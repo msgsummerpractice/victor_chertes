@@ -5,6 +5,6 @@ import { DogsContainer } from '../dogs-container/dogs-container';
   selector: 'app-home',
   imports: [DogsContainer],
   templateUrl: './home.html',
-  styleUrl: './home.css',
+  styleUrl: './home.scss',
 })
 export class Home {}

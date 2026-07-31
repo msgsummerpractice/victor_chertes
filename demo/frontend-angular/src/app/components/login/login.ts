@@ -5,6 +5,6 @@ import { LoginComponent } from '../forms/login-form/login-form';
   selector: 'app-login',
   imports: [LoginComponent],
   templateUrl: './login.html',
-  styleUrl: './login.css',
+  styleUrl: './login.scss',
 })
 export class Login {}

@@ -5,7 +5,7 @@ import { capitalizeAndSmilePipe } from '../../pipes/capitalize-and-smile-pipe/ca
   selector: 'app-dog-card',
   imports: [capitalizeAndSmilePipe],
   templateUrl: './dog-card.html',
-  styleUrl: './dog-card.css',
+  styleUrl: './dog-card.scss',
 })
 export class DogCard {
   imageUrl = input<string>('');
