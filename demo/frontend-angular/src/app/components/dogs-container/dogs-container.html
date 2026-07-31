@@ -1,0 +1,45 @@
+<div class="flex flex-col gap-4">
+  <button
+    matButton="filled"
+    color="primary"
+    (click)="dogService.fetchDogs()"
+    [disabled]="dogService.isLoading()"
+    class="self-end"
+  >
+    {{ dogService.isLoading() ? 'Loading...' : 'Bring me 3 dogs!' }}
+  </button>
+
+  @if (dogService.isError()) {
+    <div class="mb-6 text-center p-4 bg-red-50 rounded-xl">
+      <p class="text-red-600 font-bold">
+        There has been an error while fetching. Please try again.
+      </p>
+    </div>
+  }
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <app-dog-card
+      [imageUrl]="dogService.dogImages()[0] || ''"
+      [name]="'Hound Basset'"
+      [description]="'Friendly, intelligent, and devoted.'"
+      [isLoading]="dogService.isLoading()"
+    >
+    </app-dog-card>
+
+    <app-dog-card
+      [imageUrl]="dogService.dogImages()[1] || ''"
+      [name]="'Hound Walker'"
+      [description]="'Playful, smart, and adaptable.'"
+      [isLoading]="dogService.isLoading()"
+    >
+    </app-dog-card>
+
+    <app-dog-card
+      [imageUrl]="dogService.dogImages()[2] || ''"
+      [name]="'Hound Afghan'"
+      [description]="'Confident, courageous, and smart.'"
+      [isLoading]="dogService.isLoading()"
+    >
+    </app-dog-card>
+  </div>
+</div>

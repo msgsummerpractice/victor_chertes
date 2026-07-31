@@ -1,0 +1,38 @@
+<mat-toolbar color="primary" class="fixed top-0 left-0 w-full z-50 shadow-md">
+  <div class="flex justify-between items-center w-full px-4">
+    <div class="flex items-center gap-2">
+      <div class="md:hidden">
+        <button
+          mat-icon-button
+          class="md:hidden"
+          [matMenuTriggerFor]="mobileMenu"
+          aria-label="Open the Menu"
+        >
+          <mat-icon>menu</mat-icon>
+        </button>
+      </div>
+
+      <span class="font-bold text-xl tracking-wide mr-4">DogApp</span>
+
+      <div class="hidden md:flex gap-2">
+        <a mat-button routerLink="/home" routerLinkActive="!text-blue-300"> Home </a>
+        <div *appIfAuth="!authService.isAuthenticated()">
+          <a mat-button routerLink="/login" routerLinkActive="!text-blue-300"> Login </a>
+        </div>
+      </div>
+    </div>
+
+    <div *appIfAuth="authService.isAuthenticated()">
+      <button matIconButton routerLink="/login" aria-label="User login">
+        <mat-icon> person </mat-icon>
+      </button>
+    </div>
+  </div>
+</mat-toolbar>
+
+<mat-menu #mobileMenu="matMenu">
+  <a mat-menu-item href="#">
+    <mat-icon>home</mat-icon>
+    <span>Home</span>
+  </a>
+</mat-menu>
