@@ -59,7 +59,7 @@ jobs:
  
           skip_app_build: true
  
-          app_location: "frontend-angular/dist/frontend-angular/browser"
+          app_location: "./frontend-angular/dist/frontend-angular/browser"
           output_location: ""
           api_location: ""
 
