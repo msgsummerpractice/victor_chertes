@@ -30,7 +30,6 @@ import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.RequestBody;
 
-
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -67,25 +66,31 @@ public class AuthController {
 
     @PostMapping("/verify-mfa")
     public ResponseEntity<?> verifyMfa(@RequestBody MfaVerificationRequestDTO mfaRequest) {
-        boolean isValid = mfaService.verifyOtp(mfaRequest.getUsername(), mfaRequest.getCode());
+        try {
+            boolean isValid = mfaService.verifyOtp(mfaRequest.getUsername(), mfaRequest.getCode());
 
-        if (!isValid) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error","Invalid or expired MFA code"));
+            if (!isValid) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                        .body(Map.of("error", "Invalid or expired MFA code"));
+            }
+
+            UserDetails userDetails = userDetailsService.loadUserByUsername(mfaRequest.getUsername());
+            Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+
+            String jwt = authService.generateToken(authentication);
+
+            List<String> roles = userDetails.getAuthorities().stream()
+                    .map(GrantedAuthority::getAuthority)
+                    .collect(Collectors.toList());
+            
+            return ResponseEntity.ok(new SignInResponseDTO(jwt, roles));
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("error", "A apărut o eroare la verificarea MFA: " + e.getMessage()));
         }
-
-        UserDetails userDetails = userDetailsService.loadUserByUsername(mfaRequest.getUsername());
-        Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-
-        String jwt = authService.generateToken(authentication);
-
-        List<String> roles = userDetails.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.toList());
-        
-        return ResponseEntity.ok(new SignInResponseDTO(jwt, roles));
-
     }
 
     @PostMapping("/register")
