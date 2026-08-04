@@ -41,7 +41,7 @@ public class MfaService {
         try {
             SimpleMailMessage message = new SimpleMailMessage();
             message.setFrom("victor.chertes.vc@gmail.com"); 
-            message.setTo(email);
+            message.setTo(toEmail);
             message.setSubject("Your Authentication Code");
             message.setText("Hello,\n\nYour Two-Factor Authentication (MFA) code is: " + otp + 
                             "\n\nPlease use this code to complete your login. It is valid for a limited time.\n\nThank you!");
