@@ -1,0 +1,12 @@
+{
+  "routes": [
+    {
+      "route": "/home",
+      "allowedRoles": ["authenticated"]
+    }
+  ],
+  "navigationFallBack": {
+    "rewrite": "index.html",
+    "exclude": ["/assets/*", "/*.js", "/*.scss", "/*.ico"]
+  }
+}
