@@ -43,11 +43,11 @@ jobs:
           cache-dependency-path: frontend-angular/package-lock.json
  
       - name: Install dependencies
-        working-directory: frontend-angular
+        working-directory: frontend-angular/
         run: npm ci
  
       - name: Build Angular
-        working-directory: frontend-angular
+        working-directory: frontend-angular/
         run: npm run build
  
       - name: Deploy
