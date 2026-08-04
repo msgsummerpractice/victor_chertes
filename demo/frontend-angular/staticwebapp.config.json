@@ -5,7 +5,7 @@
       "allowedRoles": ["authenticated"]
     }
   ],
-  "navigationFallBack": {
+  "navigationFallback": {
     "rewrite": "index.html",
     "exclude": ["/assets/*", "/*.js", "/*.scss", "/*.ico"]
   }
