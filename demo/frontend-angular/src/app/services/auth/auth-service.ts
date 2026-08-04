@@ -1,18 +1,43 @@
-import { Injectable, signal } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { inject, Injectable, signal } from '@angular/core';
+import { tap } from 'rxjs';
+
+export interface LoginResponse {
+  message: string;
+  username: string;
+}
+
+export interface SignInResponseDTO {
+  token: string;
+  roles: string[];
+}
 
 @Injectable({
-    providedIn:'root'
+  providedIn: 'root',
 })
 export class AuthService {
-    private readonly _isAuthenticated = signal<boolean>(true);
+  private readonly http = inject(HttpClient);
 
-    readonly isAuthenticated = this._isAuthenticated.asReadonly();
+  private readonly apiUrl = 'http://localhost:8080/api/auth';
 
-    login() {
+  private readonly _isAuthenticated = signal<boolean>(false);
+  readonly isAuthenticated = this._isAuthenticated.asReadonly();
+
+  login(username: string, password: string) {
+    return this.http.post<LoginResponse>(`${this.apiUrl}/login`, { username, password });
+  }
+
+  verifyMfa(username: string, code: string) {
+    return this.http.post<SignInResponseDTO>(`${this.apiUrl}/verify-mfa`, { username, code }).pipe(
+      tap((response) => {
+        localStorage.setItem('jwt_token', response.token);
         this._isAuthenticated.set(true);
-    }
+      }),
+    );
+  }
 
-    logout() {
-        this._isAuthenticated.set(false);
-    }
+  logout() {
+    localStorage.removeItem('jwt_token');
+    this._isAuthenticated.set(false);
+  }
 }
