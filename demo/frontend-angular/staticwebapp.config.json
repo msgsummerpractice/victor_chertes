@@ -8,5 +8,11 @@
   "navigationFallback": {
     "rewrite": "index.html",
     "exclude": ["/assets/*", "/*.js", "/*.scss", "/*.ico"]
+  },
+  "responseOverrides": {
+    "401": {
+      "redirect": "/login",
+      "statusCode": 302
+    }
   }
 }
