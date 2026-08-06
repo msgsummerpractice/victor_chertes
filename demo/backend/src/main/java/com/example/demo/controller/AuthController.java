@@ -12,6 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,6 +31,7 @@ import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.RequestBody;
 
+@CrossOrigin(origins = "https://mango-mushroom-0b29df703.7.azurestaticapps.net")
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {

@@ -1,0 +1,590 @@
+{
+  "properties": {
+    "lenses": [
+      {
+        "order": 0,
+        "parts": [
+          {
+            "position": {
+              "x": 0,
+              "y": 0,
+              "colSpan": 6,
+              "rowSpan": 4
+            },
+            "metadata": {
+              "inputs": [],
+              "type": "Extension/HubsExtension/PartType/MarkdownPart",
+              "settings": {
+                "content": {
+                  "content": "__My data__\n\nMetrics:\n- CdnRequestCount(Sum)\n- SiteErrors(Sum)\n- SiteHits(Sum)\n",
+                  "title": "Static Web App Metrics",
+                  "subtitle": "My subtitle",
+                  "markdownSource": 1,
+                  "markdownUri": ""
+                }
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 7,
+              "y": 0,
+              "colSpan": 6,
+              "rowSpan": 4
+            },
+            "metadata": {
+              "inputs": [],
+              "type": "Extension/HubsExtension/PartType/MarkdownPart",
+              "settings": {
+                "content": {
+                  "content": "__My data__\n\nMetrics:\n- CPU Usage(Avg)\n- Memory Percentage(Preview)\n- Network In Bytes(Sum)\n- Network Out Bytes(Sum)",
+                  "title": "Backend Metric",
+                  "subtitle": "My subtitle",
+                  "markdownSource": 1,
+                  "markdownUri": ""
+                }
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 14,
+              "y": 0,
+              "colSpan": 6,
+              "rowSpan": 4
+            },
+            "metadata": {
+              "inputs": [],
+              "type": "Extension/HubsExtension/PartType/MarkdownPart",
+              "settings": {
+                "content": {
+                  "content": "__My data__\n\nMetrics:\n- CPU Usage(Avg)\n- Memory Percentage(Preview)\n- Network In Bytes(Sum)\n- Network Out Bytes(Sum)\n",
+                  "title": "Database Metrics",
+                  "subtitle": "My subtitle",
+                  "markdownSource": 1,
+                  "markdownUri": ""
+                }
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 0,
+              "y": 4,
+              "colSpan": 6,
+              "rowSpan": 4
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "options",
+                  "isOptional": true
+                },
+                {
+                  "name": "sharedTimeRange",
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/MonitorChartPart",
+              "settings": {
+                "content": {
+                  "options": {
+                    "chart": {
+                      "metrics": [
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/bff82f66-027a-4464-a242-3e971760bb2e/resourceGroups/frontend-angular_group/providers/Microsoft.Web/staticSites/frontend-angular"
+                          },
+                          "name": "CdnRequestCount",
+                          "aggregationType": 1,
+                          "namespace": "microsoft.web/staticsites",
+                          "metricVisualization": {
+                            "displayName": "CdnRequestCount",
+                            "resourceDisplayName": "frontend-angular"
+                          }
+                        },
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/bff82f66-027a-4464-a242-3e971760bb2e/resourceGroups/frontend-angular_group/providers/Microsoft.Web/staticSites/frontend-angular"
+                          },
+                          "name": "SiteErrors",
+                          "aggregationType": 1,
+                          "namespace": "microsoft.web/staticsites",
+                          "metricVisualization": {
+                            "displayName": "SiteErrors",
+                            "resourceDisplayName": "frontend-angular"
+                          }
+                        },
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/bff82f66-027a-4464-a242-3e971760bb2e/resourceGroups/frontend-angular_group/providers/Microsoft.Web/staticSites/frontend-angular"
+                          },
+                          "name": "SiteHits",
+                          "aggregationType": 1,
+                          "namespace": "microsoft.web/staticsites",
+                          "metricVisualization": {
+                            "displayName": "SiteHits",
+                            "resourceDisplayName": "frontend-angular"
+                          }
+                        }
+                      ],
+                      "title": "Sum CdnRequestCount, Sum SiteErrors, and Sum SiteHits for frontend-angular",
+                      "titleKind": 1,
+                      "visualization": {
+                        "chartType": 2,
+                        "legendVisualization": {
+                          "isVisible": true,
+                          "position": 2,
+                          "hideHoverCard": false,
+                          "hideLabelNames": true
+                        },
+                        "axisVisualization": {
+                          "x": {
+                            "isVisible": true,
+                            "axisType": 2
+                          },
+                          "y": {
+                            "isVisible": true,
+                            "axisType": 1
+                          }
+                        },
+                        "disablePinning": true
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 7,
+              "y": 4,
+              "colSpan": 6,
+              "rowSpan": 4
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "sharedTimeRange",
+                  "isOptional": true
+                },
+                {
+                  "name": "options",
+                  "value": {
+                    "chart": {
+                      "metrics": [
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/bff82f66-027a-4464-a242-3e971760bb2e/resourceGroups/Chertes-Victor/providers/Microsoft.App/containerApps/victor-backend"
+                          },
+                          "name": "UsageNanoCores",
+                          "aggregationType": 4,
+                          "namespace": "microsoft.app/containerapps",
+                          "metricVisualization": {
+                            "displayName": "CPU Usage",
+                            "resourceDisplayName": "victor-backend"
+                          }
+                        },
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/bff82f66-027a-4464-a242-3e971760bb2e/resourceGroups/Chertes-Victor/providers/Microsoft.App/containerApps/victor-backend"
+                          },
+                          "name": "MemoryPercentage",
+                          "aggregationType": 4,
+                          "namespace": "microsoft.app/containerapps",
+                          "metricVisualization": {
+                            "displayName": "Memory Percentage (Preview)",
+                            "resourceDisplayName": "victor-backend"
+                          }
+                        },
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/bff82f66-027a-4464-a242-3e971760bb2e/resourceGroups/Chertes-Victor/providers/Microsoft.App/containerApps/victor-backend"
+                          },
+                          "name": "RxBytes",
+                          "aggregationType": 1,
+                          "namespace": "microsoft.app/containerapps",
+                          "metricVisualization": {
+                            "displayName": "Network In Bytes",
+                            "resourceDisplayName": "victor-backend"
+                          }
+                        },
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/bff82f66-027a-4464-a242-3e971760bb2e/resourceGroups/Chertes-Victor/providers/Microsoft.App/containerApps/victor-backend"
+                          },
+                          "name": "TxBytes",
+                          "aggregationType": 1,
+                          "namespace": "microsoft.app/containerapps",
+                          "metricVisualization": {
+                            "displayName": "Network Out Bytes",
+                            "resourceDisplayName": "victor-backend"
+                          }
+                        }
+                      ],
+                      "title": "Avg CPU Usage, Avg Memory Percentage (Preview), and 2 other metrics for victor-backend",
+                      "titleKind": 1,
+                      "visualization": {
+                        "chartType": 2,
+                        "legendVisualization": {
+                          "isVisible": true,
+                          "position": 2,
+                          "hideHoverCard": false,
+                          "hideLabelNames": true
+                        },
+                        "axisVisualization": {
+                          "x": {
+                            "isVisible": true,
+                            "axisType": 2
+                          },
+                          "y": {
+                            "isVisible": true,
+                            "axisType": 1
+                          }
+                        }
+                      },
+                      "timespan": {
+                        "relative": {
+                          "duration": 86400000
+                        },
+                        "showUTCTime": false,
+                        "grain": 1
+                      }
+                    }
+                  },
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/MonitorChartPart",
+              "settings": {
+                "content": {
+                  "options": {
+                    "chart": {
+                      "metrics": [
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/bff82f66-027a-4464-a242-3e971760bb2e/resourceGroups/Chertes-Victor/providers/Microsoft.App/containerApps/victor-backend"
+                          },
+                          "name": "UsageNanoCores",
+                          "aggregationType": 4,
+                          "namespace": "microsoft.app/containerapps",
+                          "metricVisualization": {
+                            "displayName": "CPU Usage",
+                            "resourceDisplayName": "victor-backend"
+                          }
+                        },
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/bff82f66-027a-4464-a242-3e971760bb2e/resourceGroups/Chertes-Victor/providers/Microsoft.App/containerApps/victor-backend"
+                          },
+                          "name": "MemoryPercentage",
+                          "aggregationType": 4,
+                          "namespace": "microsoft.app/containerapps",
+                          "metricVisualization": {
+                            "displayName": "Memory Percentage (Preview)",
+                            "resourceDisplayName": "victor-backend"
+                          }
+                        },
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/bff82f66-027a-4464-a242-3e971760bb2e/resourceGroups/Chertes-Victor/providers/Microsoft.App/containerApps/victor-backend"
+                          },
+                          "name": "RxBytes",
+                          "aggregationType": 1,
+                          "namespace": "microsoft.app/containerapps",
+                          "metricVisualization": {
+                            "displayName": "Network In Bytes",
+                            "resourceDisplayName": "victor-backend"
+                          }
+                        },
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/bff82f66-027a-4464-a242-3e971760bb2e/resourceGroups/Chertes-Victor/providers/Microsoft.App/containerApps/victor-backend"
+                          },
+                          "name": "TxBytes",
+                          "aggregationType": 1,
+                          "namespace": "microsoft.app/containerapps",
+                          "metricVisualization": {
+                            "displayName": "Network Out Bytes",
+                            "resourceDisplayName": "victor-backend"
+                          }
+                        }
+                      ],
+                      "title": "Avg CPU Usage, Avg Memory Percentage (Preview), and 2 other metrics for victor-backend",
+                      "titleKind": 1,
+                      "visualization": {
+                        "chartType": 2,
+                        "legendVisualization": {
+                          "isVisible": true,
+                          "position": 2,
+                          "hideHoverCard": false,
+                          "hideLabelNames": true
+                        },
+                        "axisVisualization": {
+                          "x": {
+                            "isVisible": true,
+                            "axisType": 2
+                          },
+                          "y": {
+                            "isVisible": true,
+                            "axisType": 1
+                          }
+                        },
+                        "disablePinning": true
+                      }
+                    }
+                  }
+                }
+              },
+              "filters": {
+                "MsPortalFx_TimeRange": {
+                  "model": {
+                    "format": "local",
+                    "granularity": "auto",
+                    "relative": "1440m"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 14,
+              "y": 4,
+              "colSpan": 6,
+              "rowSpan": 4
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "sharedTimeRange",
+                  "isOptional": true
+                },
+                {
+                  "name": "options",
+                  "value": {
+                    "chart": {
+                      "metrics": [
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/bff82f66-027a-4464-a242-3e971760bb2e/resourceGroups/Chertes-Victor/providers/Microsoft.App/containerApps/victor-db"
+                          },
+                          "name": "UsageNanoCores",
+                          "aggregationType": 4,
+                          "namespace": "microsoft.app/containerapps",
+                          "metricVisualization": {
+                            "displayName": "CPU Usage",
+                            "resourceDisplayName": "victor-db"
+                          }
+                        },
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/bff82f66-027a-4464-a242-3e971760bb2e/resourceGroups/Chertes-Victor/providers/Microsoft.App/containerApps/victor-db"
+                          },
+                          "name": "MemoryPercentage",
+                          "aggregationType": 4,
+                          "namespace": "microsoft.app/containerapps",
+                          "metricVisualization": {
+                            "displayName": "Memory Percentage (Preview)",
+                            "resourceDisplayName": "victor-db"
+                          }
+                        },
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/bff82f66-027a-4464-a242-3e971760bb2e/resourceGroups/Chertes-Victor/providers/Microsoft.App/containerApps/victor-db"
+                          },
+                          "name": "RxBytes",
+                          "aggregationType": 1,
+                          "namespace": "microsoft.app/containerapps",
+                          "metricVisualization": {
+                            "displayName": "Network In Bytes",
+                            "resourceDisplayName": "victor-db"
+                          }
+                        },
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/bff82f66-027a-4464-a242-3e971760bb2e/resourceGroups/Chertes-Victor/providers/Microsoft.App/containerApps/victor-db"
+                          },
+                          "name": "TxBytes",
+                          "aggregationType": 1,
+                          "namespace": "microsoft.app/containerapps",
+                          "metricVisualization": {
+                            "displayName": "Network Out Bytes",
+                            "resourceDisplayName": "victor-db"
+                          }
+                        }
+                      ],
+                      "title": "Avg CPU Usage, Avg Memory Percentage (Preview), and 2 other metrics for victor-db",
+                      "titleKind": 1,
+                      "visualization": {
+                        "chartType": 2,
+                        "legendVisualization": {
+                          "isVisible": true,
+                          "position": 2,
+                          "hideHoverCard": false,
+                          "hideLabelNames": true
+                        },
+                        "axisVisualization": {
+                          "x": {
+                            "isVisible": true,
+                            "axisType": 2
+                          },
+                          "y": {
+                            "isVisible": true,
+                            "axisType": 1
+                          }
+                        }
+                      },
+                      "timespan": {
+                        "relative": {
+                          "duration": 86400000
+                        },
+                        "showUTCTime": false,
+                        "grain": 1
+                      }
+                    }
+                  },
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/MonitorChartPart",
+              "settings": {
+                "content": {
+                  "options": {
+                    "chart": {
+                      "metrics": [
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/bff82f66-027a-4464-a242-3e971760bb2e/resourceGroups/Chertes-Victor/providers/Microsoft.App/containerApps/victor-db"
+                          },
+                          "name": "UsageNanoCores",
+                          "aggregationType": 4,
+                          "namespace": "microsoft.app/containerapps",
+                          "metricVisualization": {
+                            "displayName": "CPU Usage",
+                            "resourceDisplayName": "victor-db"
+                          }
+                        },
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/bff82f66-027a-4464-a242-3e971760bb2e/resourceGroups/Chertes-Victor/providers/Microsoft.App/containerApps/victor-db"
+                          },
+                          "name": "MemoryPercentage",
+                          "aggregationType": 4,
+                          "namespace": "microsoft.app/containerapps",
+                          "metricVisualization": {
+                            "displayName": "Memory Percentage (Preview)",
+                            "resourceDisplayName": "victor-db"
+                          }
+                        },
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/bff82f66-027a-4464-a242-3e971760bb2e/resourceGroups/Chertes-Victor/providers/Microsoft.App/containerApps/victor-db"
+                          },
+                          "name": "RxBytes",
+                          "aggregationType": 1,
+                          "namespace": "microsoft.app/containerapps",
+                          "metricVisualization": {
+                            "displayName": "Network In Bytes",
+                            "resourceDisplayName": "victor-db"
+                          }
+                        },
+                        {
+                          "resourceMetadata": {
+                            "id": "/subscriptions/bff82f66-027a-4464-a242-3e971760bb2e/resourceGroups/Chertes-Victor/providers/Microsoft.App/containerApps/victor-db"
+                          },
+                          "name": "TxBytes",
+                          "aggregationType": 1,
+                          "namespace": "microsoft.app/containerapps",
+                          "metricVisualization": {
+                            "displayName": "Network Out Bytes",
+                            "resourceDisplayName": "victor-db"
+                          }
+                        }
+                      ],
+                      "title": "Avg CPU Usage, Avg Memory Percentage (Preview), and 2 other metrics for victor-db",
+                      "titleKind": 1,
+                      "visualization": {
+                        "chartType": 2,
+                        "legendVisualization": {
+                          "isVisible": true,
+                          "position": 2,
+                          "hideHoverCard": false,
+                          "hideLabelNames": true
+                        },
+                        "axisVisualization": {
+                          "x": {
+                            "isVisible": true,
+                            "axisType": 2
+                          },
+                          "y": {
+                            "isVisible": true,
+                            "axisType": 1
+                          }
+                        },
+                        "disablePinning": true
+                      }
+                    }
+                  }
+                }
+              },
+              "filters": {
+                "MsPortalFx_TimeRange": {
+                  "model": {
+                    "format": "local",
+                    "granularity": "auto",
+                    "relative": "1440m"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "metadata": {
+      "model": {
+        "timeRange": {
+          "value": {
+            "relative": {
+              "duration": 24,
+              "timeUnit": 1
+            }
+          },
+          "type": "MsPortalFx.Composition.Configuration.ValueTypes.TimeRange"
+        },
+        "filterLocale": {
+          "value": "en-us"
+        },
+        "filters": {
+          "value": {
+            "MsPortalFx_TimeRange": {
+              "model": {
+                "format": "utc",
+                "granularity": "auto",
+                "relative": "24h"
+              },
+              "displayCache": {
+                "name": "UTC Time",
+                "value": "Past 24 hours"
+              },
+              "filteredPartIds": [
+                "StartboardPart-MonitorChartPart-78af5a7a-68ce-4b82-a3a6-de95f28184d3",
+                "StartboardPart-MonitorChartPart-78af5a7a-68ce-4b82-a3a6-de95f2818c03",
+                "StartboardPart-MonitorChartPart-78af5a7a-68ce-4b82-a3a6-de95f2818d90"
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  "name": "Victor-Dashboard",
+  "type": "Microsoft.Portal/dashboards",
+  "location": "INSERT LOCATION",
+  "tags": {
+    "hidden-title": "Victor-Dashboard"
+  },
+  "apiVersion": "2022-12-01-preview"
+}
