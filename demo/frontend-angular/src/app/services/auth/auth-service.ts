@@ -18,7 +18,7 @@ export interface SignInResponseDTO {
 export class AuthService {
   private readonly http = inject(HttpClient);
 
-  private readonly apiUrl = 'victor-backend.mangostone-1ac7304b.westeurope.azurecontainerapps.io/api/auth';
+  private readonly apiUrl = 'https://victor-backend.mangostone-1ac7304b.westeurope.azurecontainerapps.io/api/auth';
 
   private readonly _isAuthenticated = signal<boolean>(false);
   readonly isAuthenticated = this._isAuthenticated.asReadonly();
