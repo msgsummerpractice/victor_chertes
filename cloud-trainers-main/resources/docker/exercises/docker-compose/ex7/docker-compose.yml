@@ -1,0 +1,4 @@
+services:
+  # Implement the full stack here: nginx, node-app, and redis
+  # Hint 1: Mount nginx.conf to the nginx container
+  # Hint 2: Use 'deploy.replicas' for the node-app service

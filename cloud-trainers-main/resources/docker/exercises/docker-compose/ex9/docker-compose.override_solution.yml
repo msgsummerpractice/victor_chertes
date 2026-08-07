@@ -1,0 +1,8 @@
+# Override configuration (docker-compose.override.yml)
+services:
+  node-app:
+    ports:
+      - '8081:8081'
+    volumes:
+      - ./sources:/usr/src/app
+      - /usr/src/app/node_modules

@@ -1,0 +1,39 @@
+== Exercise 2: Managing Containers and Interactive Mode
+
+In this exercise, you will learn how to manage the lifecycle of your containers, give them names, and interact with them while they are running.
+
+=== Objectives
+
+* Run a container in detached mode.
+* Assign a custom name to a container.
+* Inspect container logs.
+* Execute commands inside a running container.
+* Stop and remove containers.
+
+=== Prerequisites
+
+* Completion of Exercise 1 (or having the `my-node-app` image available).
+
+=== Task
+
+1. Run the container in detached mode (`-d`) and give it the name `web-server`:
+   `docker run -d --name web-server -p 8080:8080 my-node-app`
+2. Verify the container is running by listing all containers:
+   `docker ps`
+3. Check the logs of the running container:
+   `docker logs web-server`
+4. Execute a command to list the files inside the container's working directory:
+   `docker exec web-server ls -l`
+5. Open an interactive shell inside the container:
+   `docker exec -it web-server sh`
+   (Type `exit` to leave the shell).
+6. Stop the container:
+   `docker stop web-server`
+7. Remove the container:
+   `docker rm web-server`
+
+== Learning Outcome
+
+* Learn how to run containers in the background.
+* Understand how to interact with running containers using `docker exec`.
+* Learn basic container management commands (`ps`, `logs`, `stop`, `rm`).

@@ -1,0 +1,3 @@
+services:
+  # Implement healthcheck for redis-server
+  # Use condition: service_healthy in node-app's depends_on

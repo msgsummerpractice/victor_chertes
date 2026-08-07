@@ -1,0 +1,6 @@
+services:
+  # Implement the production-ready stack with 'develop' watch support
+  # Requirements:
+  # 1. Add 'develop' section for 'node-app' to watch './sources'
+  # 2. Experiment with lifecycle commands: pause, unpause, cp
+  # 3. Practice advanced cleanup: down -v, down --remove-orphans

@@ -1,0 +1,58 @@
+== Exercise 11: Modern Dev Workflow (Watch Mode) and Maintenance
+
+In this final Docker Compose exercise, you will learn about the **Develop** (Watch) feature, which provides a much smoother development experience than traditional bind-mounts. You will also learn how to maintain your project by cleaning up resources properly.
+
+=== Objectives
+
+* Use `docker compose watch` to automatically sync changes.
+* Learn about lifecycle commands: `pause`, `unpause`, and `cp`.
+* Master project maintenance and cleanup.
+* Understand Graceful Shutdown and Signal Handling.
+
+=== Prerequisites
+
+* Completion of Exercise 10.
+
+=== Task
+
+1. **Enable Watch Mode**:
+   Modify your `docker-compose.yml` to include a `develop` section for the `node-app` service. This section should "watch" the `sources` directory and sync changes to `/usr/src/app` in the container.
+
+2. **Run the Watcher**:
+   Start the application in watch mode:
+   `docker compose watch`
+   Now, try changing the greeting message in `sources/index.js`. Notice how Compose automatically syncs the file or rebuilds the container!
+
+3. **Experiment with Lifecycle**:
+    * **Pause a service**: Stop the `redis-server` without killing it: `docker compose pause redis-server`. Try visiting the app—it should fail or hang.
+    * **Unpause**: Bring it back: `docker compose unpause redis-server`.
+    * **Copy files**: Copy the `package.json` from the container to your host:
+      `docker compose cp node-app:/usr/src/app/package.json ./package-backup.json`
+
+4. **Advanced Cleanup**:
+    * Stop the project and remove everything, including volumes:
+      `docker compose down -v`
+    * Remove orphaned containers (containers that were part of the project but are no longer in the YAML file):
+      `docker compose down --remove-orphans`
+
+=== Bonus: Graceful Shutdown
+
+Have you noticed that sometimes containers take a long time to stop or exit with a non-zero code? This often happens when the application doesn't handle termination signals (like `SIGTERM`) properly.
+
+1. **The Problem with `npm start`**: When you use `npm start` as your `CMD`, `npm` becomes PID 1. However, `npm` does not forward signals to the underlying Node.js process. When you run `docker compose down`, Docker sends `SIGTERM` to `npm`, which ignores it. Eventually, Docker kills the process abruptly with `SIGKILL`.
+2. **The Fix**: In the `Dockerfile`, we now use `CMD ["node", "index.js"]` to ensure Node.js receives signals directly.
+3. **Application Code**: Check `sources/index.js`. We've added a listener for `SIGTERM` and `SIGINT` to close the HTTP server and Redis connection gracefully before exiting.
+
+Try running `docker compose down` again and watch the logs (if you use `docker compose up` in a separate terminal). You should see the "Shutting down gracefully" messages! 
+
+**Note**: If you still see `npm error signal SIGTERM` and `exit code 1`, it's likely because you are running an old version of the container image. Ensure you rebuild the image with `docker compose up --build`. You can verify that Node.js is running as PID 1 by looking for the "App started with PID: 1" message in the logs.
+
+=== Why "Watch" instead of Bind Mounts?
+
+Bind mounts can be slow on Windows/Mac and often require tools like `nodemon` inside the container. `docker compose watch` is a native, more efficient way to sync code, and it can even trigger image rebuilds automatically when dependencies change.
+
+== Learning Outcome
+
+* Master the modern Docker Compose development workflow.
+* Understand how to manage the state of your services without stopping them.
+* Learn how to keep your Docker environment clean and free of orphaned resources.

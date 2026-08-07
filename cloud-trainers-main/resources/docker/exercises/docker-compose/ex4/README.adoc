@@ -1,0 +1,58 @@
+== Exercise 4: Custom Networks and Isolation
+
+By default, Docker Compose creates a single network for your application, and all services can communicate with each other. In this exercise, you will learn how to define **Custom Networks** to isolate services and control communication.
+
+=== Objectives
+
+* Define custom networks in `docker-compose.yml`.
+* Assign services to specific networks.
+* Understand service isolation (a service on one network cannot talk to a service on another unless explicitly connected).
+
+=== Prerequisites
+
+* Completion of Exercise 1.
+
+=== Task
+
+1. Create a `docker-compose.yml` file that defines two networks: `frontend` and `backend`.
+2. Place the `node-app` on both networks (since it needs to receive external traffic and talk to Redis).
+3. Place `redis-server` only on the `backend` network.
++
+[source,yaml]
+----
+services:
+  redis-server:
+    image: 'redis:alpine'
+    networks:
+      - backend
+
+  node-app:
+    build: .
+    ports:
+      - '8081:8081'
+    environment:
+      - REDIS_HOST=redis-server
+    networks:
+      - frontend
+      - backend
+    depends_on:
+      - redis-server
+
+networks:
+  frontend:
+  backend:
+----
+4. Start the application:
+   `docker compose up -d`
+5. Verify it works by visiting `http://localhost:8081`.
+6. Inspect the networks:
+   `docker network ls`
+   `docker network inspect <project_name>_backend`
+7. Try to reach the Redis server from your host machine (it should fail because it's not mapped to any host port and it's on a private network).
+8. Clean up:
+   `docker compose down`
+
+== Learning Outcome
+
+* Learn how to improve security by isolating sensitive services (like databases) in backend networks.
+* Understand that service names are automatically resolved to IP addresses within the same network (DNS).

@@ -1,0 +1,45 @@
+== Exercise 7: Optimizing builds with Layer Caching and .dockerignore
+
+Docker builds images in layers. In this exercise, you will learn how to structure your `Dockerfile` to take advantage of layer caching, significantly speeding up your build process. You will also use `.dockerignore` to keep your build context clean.
+
+=== Objectives
+
+* Understand how Docker layer caching works.
+* Optimize a `Dockerfile` for faster rebuilds.
+* Use a `.dockerignore` file to exclude unnecessary files from the build context.
+
+=== Prerequisites
+
+* Completion of Exercise 1 or 5.
+
+=== Task
+
+1. Look at the `Dockerfile` in this directory. It copies all files at once:
++
+[source,dockerfile]
+----
+FROM node:lts-alpine3.23
+WORKDIR /usr/src/app
+COPY sources/ .
+RUN npm install
+CMD ["npm", "start"]
+----
+2. Build the image and time it (or observe the logs):
+   `docker build -t unoptimized-app .`
+3. Modify `sources/index.js` (e.g., add a comment).
+4. Rebuild the image:
+   `docker build -t unoptimized-app .`
+   Notice that `RUN npm install` executes again, even though `package.json` hasn't changed. This is inefficient.
+5. Create a `.dockerignore` file in this directory and add:
+   `node_modules`
+   `npm-debug.log`
+6. Optimize the `Dockerfile` by copying `package.json` first and running `npm install` before copying the rest of the source code.
+7. Build the optimized image:
+   `docker build -t optimized-app .`
+8. Modify `sources/index.js` again and rebuild. Notice that `RUN npm install` is now **CACHED**, making the build much faster!
+
+== Learning Outcome
+
+* Learn why the order of commands in a `Dockerfile` matters.
+* Understand that any change in a layer invalidates all subsequent layers.
+* Learn how to use `.dockerignore` to reduce image size and build time.

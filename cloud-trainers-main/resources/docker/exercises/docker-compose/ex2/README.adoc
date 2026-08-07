@@ -1,0 +1,53 @@
+== Exercise 2: Environment Variables and .env files
+
+Hardcoding environment variables in `docker-compose.yml` is not ideal for different environments (dev, staging, prod). In this exercise, you will learn how to use a `.env` file to manage your application configuration.
+
+=== Objectives
+
+* Use a `.env` file to define environment variables.
+* Reference variables in the `docker-compose.yml` file.
+* Understand variable substitution in Compose.
+
+=== Prerequisites
+
+* Completion of Exercise 1.
+
+=== Task
+
+1. Create a `.env` file in this directory with the following content:
++
+[source,env]
+----
+REDIS_HOST=redis-server
+GREETING=Welcome to the scaled app! 
+----
+2. Create a `docker-compose.yml` file that uses these variables:
++
+[source,yaml]
+----
+services:
+  redis-server:
+    image: 'redis:alpine'
+
+  node-app:
+    build: .
+    ports:
+      - '8081:8081'
+    environment:
+      - REDIS_HOST=${REDIS_HOST}
+      - GREETING=${GREETING}
+    depends_on:
+      - redis-server
+----
+3. Start the application:
+   `docker compose up -d`
+4. Verify the greeting by visiting `http://localhost:8081`.
+5. Change the `GREETING` in the `.env` file and run `docker compose up -d` again. Notice how the changes are applied.
+6. Clean up:
+   `docker compose down`
+
+== Learning Outcome
+
+* Learn how to decouple configuration from the Compose file.
+* Understand how Docker Compose automatically loads the `.env` file in the same directory.
+* Learn the `${VARIABLE}` syntax for substitution.

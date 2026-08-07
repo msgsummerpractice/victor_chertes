@@ -1,0 +1,43 @@
+== Exercise 10: Advanced Orchestration (Secrets, Limits, and Profiles)
+
+In this final Docker Compose exercise, you will learn how to manage production-grade deployments by handling sensitive information securely, controlling resource consumption, and using profiles to manage optional services.
+
+=== Objectives
+
+* Use **Secrets** to manage sensitive data without exposing them in environment variables.
+* Implement **Resource Limits** to ensure service stability.
+* Use **Profiles** to toggle optional services (like an admin interface).
+
+=== Prerequisites
+
+* Completion of Exercise 7 (Full Stack with Nginx).
+
+=== Task
+
+1. Create a file named `db_password.txt` containing a secret password (e.g., `supersecret`).
+2. Modify `docker-compose.yml` to:
+    * **Define a secret**: Use the `secrets` top-level element to point to `db_password.txt`.
+    * **Grant access to the secret**: Make the secret available to the `node-app` service.
+    * **Set Resource Limits**: For the `node-app` and `redis-server` services, set a memory limit of `50M` and a CPU limit of `0.5`.
+    * **Add an Admin Service with a Profile**: Add a service using the `adminer` image (or `redis-commander`) and assign it to a profile named `tools`.
+3. Start the main application:
+   `docker compose up -d`
+   Notice that the `adminer` service does NOT start.
+4. Start the application including the tools:
+   `docker compose --profile tools up -d`
+   Now the admin interface is running!
+5. Verify the resource limits:
+   `docker stats`
+   Observe the memory limits applied to your containers.
+6. Clean up:
+   `docker compose --profile tools down`
+
+=== Why Secrets?
+
+Environment variables can be inspected easily (e.g., via `docker inspect`). Secrets are mounted as files in `/run/secrets/` inside the container, which is more secure and integrates better with orchestrators like Docker Swarm and Kubernetes.
+
+== Learning Outcome
+
+* Learn how to handle sensitive data securely in Compose.
+* Understand how to prevent "noisy neighbor" problems using resource constraints.
+* Master the use of profiles to keep your Compose files clean while supporting multiple service sets.

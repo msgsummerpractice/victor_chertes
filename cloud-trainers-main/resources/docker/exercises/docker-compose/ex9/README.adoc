@@ -1,0 +1,63 @@
+== Exercise 9: Multiple Compose Files and Overrides
+
+In real projects, you often need different configurations for development and production. Docker Compose allows you to split your configuration into multiple files and merge them. In this exercise, you will learn how to use `docker-compose.override.yml`.
+
+=== Objectives
+
+* Understand how Docker Compose merges multiple files.
+* Use a base `docker-compose.yml` for common configuration.
+* Use an override file for development-specific settings (like bind mounts or debug ports).
+
+=== Prerequisites
+
+* Completion of Exercise 3 (Bind Mounts).
+
+=== Task
+
+1. Create a base `docker-compose.yml` with the core service definitions:
++
+[source,yaml]
+----
+services:
+  redis-server:
+    image: 'redis:alpine'
+
+  node-app:
+    build: .
+    environment:
+      - REDIS_HOST=redis-server
+    depends_on:
+      - redis-server
+----
+2. Create a `docker-compose.override.yml` file with development-specific overrides (port mapping and bind mounts):
++
+[source,yaml]
+----
+services:
+  node-app:
+    ports:
+      - '8081:8081'
+    volumes:
+      - ./sources:/usr/src/app
+      - /usr/src/app/node_modules
+----
+3. Start the application by simply running:
+   `docker compose up -d`
+   Notice that Docker Compose automatically picks up the `docker-compose.override.yml` file!
+4. Verify it works by visiting `http://localhost:8081`.
+5. Check the effective configuration that Compose is using:
+   `docker compose config`
+   Notice how the two files are merged.
+6. Clean up:
+   `docker compose down`
+
+=== Pro Tip
+
+To use a different override file (e.g., for production), you can use the `-f` flag:
+`docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d`
+
+== Learning Outcome
+
+* Learn how to keep your configuration DRY (Don't Repeat Yourself).
+* Understand the automatic merging behavior of `docker-compose.override.yml`.
+* Learn how to inspect the final configuration using `docker compose config`.

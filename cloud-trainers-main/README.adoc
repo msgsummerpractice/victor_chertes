@@ -1,0 +1,40 @@
+= ☁️ Cloud Training Program 2026
+:toc:
+:toc-title: Table of Contents
+:icons: font
+
+Welcome! This repository contains all the planning materials for the *Cloud Training Program 2026* — a hands-on training designed for *students* to learn cloud-native development with Docker and Microsoft Azure.
+
+=== What Students Will Learn
+
+* How to containerize applications with *Docker*
+* Cloud computing fundamentals and the *Azure* ecosystem
+* Deploying frontends with *Azure Static Web Apps*
+* Storing and versioning images with *Azure Container Registry*
+* Running backends with *Azure Container Apps*
+* Managing secrets with *Azure Key Vault*
+* Monitoring your apps with *Azure Monitor* (logs, metrics, dashboards)
+* Cloud career paths — Cloud Engineer, DevOps Engineer, Cloud Architect
+
+== 📝 Key Documents
+
+link:backlog-2026.adoc[*Product Backlog*]::
+A detailed list of tasks for each day. Use this to track your progress — each task tells you exactly what to do and what you'll learn.
+
+link:timeline-2026.adoc[*Timeline*]::
+The training schedule at a glance, including presenters and materials for each session.
+
+link:resources/docker/wsl-docker-setup/README.adoc[*WSL + Docker Setup (Windows)*]::
+Instructions for bootstrapping WSL and Docker with Ubuntu, including run and verify steps.
+
+== 💡 Prerequisites
+
+* A laptop with WSL Docker installed
+* A https://github.com[GitHub] account
+* Access to an Azure subscription (will be provided)
+* Basic programming knowledge in any language
+
+'''
+
+_Good luck and happy learning!_ 🎓
+

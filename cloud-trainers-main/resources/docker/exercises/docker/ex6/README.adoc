@@ -1,0 +1,46 @@
+== Exercise 6: Persistent Data with Named Volumes
+
+In Exercise 4, you used bind mounts to persist data. In this exercise, you will learn how to use **Named Volumes**, which are managed by Docker and are the preferred way to persist data in production.
+
+=== Objectives
+
+* Create a Docker named volume.
+* Mount a named volume to a container.
+* Verify data persistence across container removals.
+* List and inspect Docker volumes.
+
+=== Prerequisites
+
+* Completion of Exercise 5.
+* Basic understanding of Redis `SET` and `GET` commands.
+
+=== Task
+
+1. Create a named volume called `redis-data`:
+   `docker volume create redis-data`
+2. List all volumes to verify it was created:
+   `docker volume ls`
+3. Run a Redis container using the named volume. Redis stores its data in `/data` by default:
+   `docker run -d --name redis-persistent -v redis-data:/data redis:alpine`
+4. Use `docker exec` to set a key in Redis:
+   `docker exec -it redis-persistent redis-cli set mykey "Hello from volume"`
+5. Verify the key is set:
+   `docker exec -it redis-persistent redis-cli get mykey`
+6. Stop and remove the Redis container:
+   `docker stop redis-persistent`
+   `docker rm redis-persistent`
+7. Run a *new* Redis container using the *same* volume:
+   `docker run -d --name redis-new -v redis-data:/data redis:alpine`
+8. Verify that the data still exists in the new container:
+   `docker exec -it redis-new redis-cli get mykey`
+   (It should return "Hello from volume").
+9. Clean up:
+   `docker stop redis-new`
+   `docker rm redis-new`
+   `docker volume rm redis-data`
+
+== Learning Outcome
+
+* Understand the difference between bind mounts and named volumes.
+* Learn how to manage volumes using the `docker volume` command.
+* Understand that volumes live independently of the container lifecycle.

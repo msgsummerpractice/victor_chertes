@@ -1,0 +1,16 @@
+services:
+  redis-server:
+    image: 'redis:alpine'
+
+  node-app:
+    build: .
+    command: npm run dev
+    ports:
+      - '8081:8081'
+    volumes:
+      - ./sources:/usr/src/app
+      - /usr/src/app/node_modules
+    environment:
+      - REDIS_HOST=redis-server
+    depends_on:
+      - redis-server

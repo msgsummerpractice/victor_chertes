@@ -1,0 +1,47 @@
+== Exercise 10: The Production-Ready Container
+
+In this final Docker exercise, you will combine everything you've learned to create a production-grade container. This involves not just making it work, but making it secure, observable, and highly optimized.
+
+=== Objectives
+
+* Implement **Security Best Practices**: Run the application as a non-root user.
+* Implement **Observability**: Add a `HEALTHCHECK` instruction.
+* Refine **Multi-stage Builds**: Ensure the final image is as small and clean as possible.
+* Understand **Signal Handling**: Why `CMD ["node", "index.js"]` is better than `CMD ["npm", "start"]`.
+
+=== Prerequisites
+
+* Completion of Exercise 9 (Multi-stage builds).
+
+=== Task
+
+1. Modify the `Dockerfile` to implement the following production features:
+    * **Non-root user**: Use the `USER` instruction to run the app as a restricted user (e.g., `node` user provided in Alpine images).
+    * **Healthcheck**: Add a `HEALTHCHECK` that uses `curl` or a small script to verify the app is responding on port 8081. Note: You might need to install `curl` in the final stage.
+    * **Direct Execution**: Use `node index.js` instead of `npm start` to ensure the process receives signals (like SIGTERM) correctly.
+    * **Clean Up**: Ensure no build-time dependencies or caches remain in the final image.
+
+2. Build the image:
+   `docker build -t node-app:prod .`
+
+3. Run the image and check its status:
+   `docker run -d --name my-prod-app -p 8081:8081 node-app:prod`
+   `docker ps`
+   Wait a few seconds and notice the `(healthy)` status in the `STATUS` column!
+
+4. Inspect the image security:
+   `docker exec my-prod-app whoami`
+   It should return `node`, not `root`.
+
+5. Clean up:
+   `docker rm -f my-prod-app`
+
+=== Why a non-root user?
+
+By default, Docker containers run as `root`. If an attacker escapes the container, they could gain root access to your host machine. Running as a non-privileged user follows the "Principle of Least Privilege".
+
+== Learning Outcome
+
+* Master the creation of secure, production-ready Docker images.
+* Understand how to provide health information to Docker/Kubernetes.
+* Learn the importance of process management inside containers.

@@ -1,0 +1,64 @@
+== Exercise 3: Using Environment Variables for Configuration
+
+In this exercise, you will learn how to pass configuration data to your containers using environment variables.
+
+=== Objectives
+
+* Define environment variables in a `Dockerfile`.
+* Pass environment variables at runtime using the `docker run` command.
+* Verify that environment variables are correctly set inside the container.
+* Modify the `sources/index.js` file, change the message from:
++
+[source,js]
+----
+app.get('/', (req, res) => {
+    res.send('Hi there');
+});
+----
++
+to:
++
+[source,js]
+----
+app.get('/', (req, res) => {
+    const color = process.env.APP_COLOR || 'black';
+    res.send(`<span style="color: ${color};">Hi there</span>`);
+});
+----
+
+=== Prerequisites
+
+* Completion of Exercise 1.
+
+=== Task
+
+1. Modify the `Dockerfile` in this directory to include a default environment variable:
+   `ENV APP_COLOR=blue`
+   (You can use the `Dockerfile` from Exercise 1 as a template).
+2. Build the new image:
+   `docker build -t my-configurable-app .`
+3. Run the container and check the environment variable:
+   `docker run --rm my-configurable-app env | grep APP_COLOR`
+   You should see `APP_COLOR=blue`.
+4. Run the commands:
++
+[source,bash]
+----
+# you are in in wsl here
+docker run --rm -it my-node-app sh
+# you are in docker container here
+echo $APP_COLOR
+exit
+# with exit you go back to wsl
+----
+5. Override the environment variable at runtime using the `-e` flag:
+   `docker run --rm -e APP_COLOR=red my-configurable-app env | grep APP_COLOR`
+   You should see `APP_COLOR=red`.
+6. Check the text color by navigating to http://localhost:8080 in a browser.
+
+
+== Learning Outcome
+
+* Understand the `ENV` instruction in a `Dockerfile`.
+* Learn how to provide runtime configuration using `-e` or `--env`.
+* Understand how environment variables can be used to make images more flexible.

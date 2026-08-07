@@ -1,0 +1,47 @@
+== Exercise 6: Scaling Services and Load Balancing
+
+One of the most powerful features of Docker Compose is the ability to scale services. In this exercise, you will learn how to run multiple instances of your application and see how Docker handles load balancing between them.
+
+=== Objectives
+
+* Scale a service using the `--scale` flag.
+* Observe internal load balancing via service discovery.
+* Understand the limitations of port mapping when scaling.
+
+=== Prerequisites
+
+* Completion of Exercise 1.
+
+=== Task
+
+1. Create a `docker-compose.yml` file. Note that we **remove** the host port mapping from `node-app` because you cannot bind multiple containers to the same host port (`8081`).
++
+[source,yaml]
+----
+services:
+  redis-server:
+    image: 'redis:alpine'
+
+  node-app:
+    build: .
+    # ports: - '8081:8081'  <-- Remove this for scaling!
+    environment:
+      - REDIS_HOST=redis-server
+    depends_on:
+      - redis-server
+----
+2. Start the application with 3 replicas of `node-app`:
+   `docker compose up -d --scale node-app=3`
+3. Verify that 3 containers are running:
+   `docker compose ps`
+4. Since we removed port mapping, we can't access it from `localhost:8081` yet. (We will fix this with a reverse proxy in the next exercise). For now, use `docker compose exec` to ping the `node-app` service from within the network:
+   `docker compose exec redis-server ping node-app`
+   Notice that it resolves to different IP addresses!
+5. Stop and clean up:
+   `docker compose down`
+
+== Learning Outcome
+
+* Learn how to scale services horizontally.
+* Understand that Docker Compose provides a built-in DNS-based load balancer.
+* Recognize the need for a reverse proxy/load balancer to expose a scaled service to the outside world.

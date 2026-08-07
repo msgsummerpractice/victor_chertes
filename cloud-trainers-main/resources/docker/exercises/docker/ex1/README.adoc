@@ -1,0 +1,36 @@
+== Exercise 1: Build and Run your first Container
+
+In this exercise, you will learn how to containerize a simple Node.js application using a Dockerfile.
+
+=== Objectives
+
+* Create a `Dockerfile` for a Node.js application.
+* Build a Docker image from the `Dockerfile`.
+* Run a container based on the built image.
+* Verify the application is running.
+
+=== Prerequisites
+
+* Docker installed on your machine.
+* Familiarity with basic terminal commands.
+
+=== Task
+
+1. Navigate to this directory (`resources/docker/exercises/docker/ex1`).
+2. Edit the `Dockerfile` in this directory with the following instructions:
+    * Use `node:lts-alpine3.23` as the base image.
+    * Set the working directory to `/usr/src/app`.
+    * Copy `package.json` into the container.
+    * Run `npm install` to install dependencies.
+    * Copy the rest of the application files into the container.
+    * Expose port `8080`.
+    * Define the command to start the application (`npm start`).
+3. Build the image using the command: `docker build -t my-node-app .`
+4. Run the container: `docker run -p 8080:8080 my-node-app`
+5. Open your browser and navigate to `http://localhost:8080`. You should see "Hi there".
+
+== Learning Outcome
+
+* Understand the basic structure of a `Dockerfile`.
+* Learn how to build and run Docker images.
+* Understand port mapping between the host and the container.

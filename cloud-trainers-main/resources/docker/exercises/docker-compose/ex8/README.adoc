@@ -1,0 +1,55 @@
+== Exercise 8: Healthchecks and Service Dependencies
+
+Simply starting containers in order is sometimes not enough. A database might take a few seconds to fully initialize and accept connections. In this exercise, you will learn how to use **Healthchecks** to ensure your application only starts when its dependencies are truly ready.
+
+=== Objectives
+
+* Define a `healthcheck` for a service.
+* Use `depends_on` with a `condition` to wait for a healthy dependency.
+* Understand the `service_healthy` state.
+
+=== Prerequisites
+
+* Completion of Exercise 1.
+
+=== Task
+
+1. Create a `docker-compose.yml` file. Add a healthcheck to `redis-server` and modify the `depends_on` for `node-app`:
++
+[source,yaml]
+----
+services:
+  redis-server:
+    image: 'redis:alpine'
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+      start_period: 5s
+
+  node-app:
+    build: .
+    ports:
+      - '8081:8081'
+    environment:
+      - REDIS_HOST=redis-server
+    depends_on:
+      redis-server:
+        condition: service_healthy
+----
+2. Start the application:
+   `docker compose up -d`
+3. Watch the status of the containers:
+   `docker compose ps`
+   Notice that `node-app` stays in the `created` or `starting` state until `redis-server` reports as `healthy`.
+4. Check the health status using `docker inspect` (optional):
+   `docker inspect --format='{{json .State.Health}}' <container_id>`
+5. Clean up:
+   `docker compose down`
+
+== Learning Outcome
+
+* Learn how to make your application more robust by handling slow-starting dependencies.
+* Understand how Docker uses commands like `redis-cli ping` to monitor service health.
+* Learn the advanced syntax for `depends_on`.

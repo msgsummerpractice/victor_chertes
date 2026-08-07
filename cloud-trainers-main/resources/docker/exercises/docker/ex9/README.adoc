@@ -1,0 +1,50 @@
+== Exercise 9: Multi-stage Builds for Image Size Optimization
+
+In this exercise, you will learn how to use **Multi-stage Builds** to create production-ready images that are significantly smaller and more secure by excluding build-time dependencies.
+
+=== Objectives
+
+* Understand the concept of multiple `FROM` instructions in a single `Dockerfile`.
+* Separate the build environment from the production runtime environment.
+* Compare image sizes between single-stage and multi-stage builds.
+
+=== Prerequisites
+
+* Completion of Exercise 7.
+
+=== Task
+
+1. Look at the optimized `Dockerfile` from Exercise 7. It creates an image that includes all npm dependencies and the source code.
+2. Implement a multi-stage `Dockerfile`:
+    * **Stage 1 (build)**: Use `node:lts-alpine3.23`, copy everything, and run `npm install`.
+    * **Stage 2 (production)**: Use a fresh `node:lts-alpine3.23` (or even a smaller image), and copy ONLY the necessary files from the build stage.
++
+[source,dockerfile]
+----
+# Stage 1: Build
+FROM node:lts-alpine3.23 AS builder
+WORKDIR /usr/src/app
+COPY sources/package.json ./
+RUN npm install
+COPY sources/ .
+
+# Stage 2: Production
+FROM node:lts-alpine3.23
+WORKDIR /usr/src/app
+# Copy only the node_modules and source code from the builder stage
+COPY --from=builder /usr/src/app/node_modules ./node_modules
+COPY --from=builder /usr/src/app .
+
+CMD ["npm", "start"]
+----
+3. Build the multi-stage image:
+   `docker build -t multi-stage-app .`
+4. List your images and compare the size of `multi-stage-app` with your previous images:
+   `docker images`
+5. Run the container to ensure it still works correctly.
+
+== Learning Outcome
+
+* Learn how to use the `AS` keyword to name build stages.
+* Understand the `COPY --from` instruction.
+* Learn how to minimize the attack surface and size of production images.

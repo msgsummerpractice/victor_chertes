@@ -1,0 +1,2 @@
+services:
+  # Implement scaling here. Remember to remove host port mapping from node-app!

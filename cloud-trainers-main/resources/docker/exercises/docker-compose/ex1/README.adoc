@@ -1,0 +1,51 @@
+== Exercise 1: Introduction to Docker Compose
+
+Managing multiple containers manually using `docker run` can become complex. In this exercise, you will learn how to use **Docker Compose** to define and run a multi-container application with a single command.
+
+=== Objectives
+
+* Understand the structure of a `docker-compose.yml` file.
+* Define services, networks, and volumes in Compose.
+* Use `docker compose up` and `docker compose down` to manage the application lifecycle.
+
+=== Prerequisites
+
+* Completion of Exercise 5 and Exercise 6.
+
+=== Task
+
+1. Create a `docker-compose.yml` file in this directory to orchestrate the Node.js app and the Redis database:
++
+[source,yaml]
+----
+services:
+  redis-server:
+    image: 'redis:alpine'
+    volumes:
+      - redis-data:/data
+
+  node-app:
+    build: .
+    ports:
+      - '8081:8081'
+    environment:
+      - REDIS_HOST=redis-server
+    depends_on:
+      - redis-server
+
+volumes:
+  redis-data:
+----
+2. Start the entire application:
+   `docker compose up -d`
+3. Verify the application is running by visiting `http://localhost:8081`.
+4. Check the logs of all services:
+   `docker compose logs`
+5. Stop and remove all containers, networks, and volumes defined in the file:
+   `docker compose down -v`
+
+== Learning Outcome
+
+* Learn how Docker Compose simplifies multi-container management.
+* Understand the mapping between `docker run` flags and `docker-compose.yml` properties.
+* Learn how to manage a group of related containers as a single unit.

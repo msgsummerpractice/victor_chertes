@@ -1,0 +1,16 @@
+services:
+  redis-server:
+    image: 'redis:alpine'
+
+  node-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - APP_COLOR=lightblue
+    ports:
+      - '8081:8081'
+    environment:
+      - REDIS_HOST=redis-server
+    depends_on:
+      - redis-server

@@ -1,0 +1,46 @@
+== Exercise 5: Connecting Containers with Networks
+
+In this exercise, you will learn how to enable communication between multiple containers using Docker's user-defined bridge networks. You will deploy a Node.js application that connects to a Redis database to count page visits.
+
+=== Objectives
+
+* Create a user-defined Docker bridge network.
+* Containerize a Node.js application that uses Redis.
+* Run multiple containers on the same network and verify they can communicate.
+* Verify inter-container communication using container names (DNS).
+
+=== Prerequisites
+
+* Basic understanding of Docker containers and Dockerfiles.
+
+=== Task
+
+1. Create a new bridge network named `app-network`:
+   `docker network create app-network`
+2. Run a Redis container on the `app-network` with the name `redis-server`:
+   `docker run -d --name redis-server --network app-network redis:alpine`
+3. Implement the `Dockerfile` in this directory for the Node.js app located in the `sources` folder:
+    * Use `node:lts-alpine3.23` as the base image.
+    * Set the working directory to `/usr/src/app`.
+    * Copy `sources/package.json` into the container.
+    * Run `npm install` to install dependencies.
+    * Copy the rest of the application files from `sources/` into the container.
+    * Expose port `8081`.
+    * Define the command to start the application (`npm start`).
+4. Build the image for the Node.js app:
+   `docker build -t visit-counter .`
+5. Run the Node.js app container on the same network:
+   `docker run -d --name app-container --network app-network -p 8081:8081 visit-counter`
+6. Open your browser and navigate to `http://localhost:8081`. Refresh the page a few times to see the visit counter increase.
+7. (Optional) Verify that the app container can resolve the `redis-server` name:
+   `docker exec app-container nslookup redis-server`
+8. Clean up by stopping and removing the containers and the network:
+   `docker stop redis-server app-container`
+   `docker rm redis-server app-container`
+   `docker network rm app-network`
+
+== Learning Outcome
+
+* Understand how Docker's built-in DNS allows containers to communicate using names.
+* Learn how to connect an application container to a database container.
+* Understand the importance of user-defined networks for container isolation and communication.
