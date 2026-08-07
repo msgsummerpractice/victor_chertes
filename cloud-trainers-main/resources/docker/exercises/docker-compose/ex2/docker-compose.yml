@@ -1,0 +1,17 @@
+services:
+  # Define your services here
+  # Use ${VARIABLE_NAME} to reference variables from .env
+ redis-server:
+    image: 'redis:alpine'
+    volumes:
+      - redis-data:/data
+    
+  node-app:
+    build: .
+    ports:
+      - '8081:8081'
+    environment:
+      - REDIS_HOST=${REDIS_HOST}
+      - GREETING=${GREETING}
+    depends_on:
+      - redis-server

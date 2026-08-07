@@ -1,0 +1,17 @@
+services:
+  # Implement the dev workflow here
+  # Hint: Use volumes to mount ./sources to /usr/src/app
+  redis-server:
+    image: 'redis:alpine'
+    
+  node-app:
+    build: .
+    ports:
+      - '8081:8081'
+    volumes:
+      - ./sources:/usr/src/app
+      - /usr/src/app/node_modules
+    environment:
+      - REDIS_HOST=redis_server
+    depends_on:
+      - redis-server

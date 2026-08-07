@@ -1,0 +1,13 @@
+services:
+  redis-server:
+    image: 'redis:alpine'
+
+  node-app:
+    build: .
+    ports:
+      - '8081:8081'
+    environment:
+      - REDIS_HOST=${REDIS_HOST}
+      - GREETING=${GREETING}
+    depends_on:
+      - redis-server

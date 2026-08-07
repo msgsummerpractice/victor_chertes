@@ -1,0 +1,8 @@
+# Read README.adoc for instructions on how to complete this Dockerfile
+FROM node:lts-alpine3.23
+WORKDIR usr/src/app
+COPY sources/package.json ./
+RUN npm install
+COPY sources/ .
+EXPOSE 8080
+CMD ["npm", "start"]

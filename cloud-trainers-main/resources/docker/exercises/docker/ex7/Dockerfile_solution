@@ -1,0 +1,9 @@
+FROM node:lts-alpine3.23
+WORKDIR /usr/src/app
+# Copy package.json first to leverage layer caching
+COPY sources/package.json ./
+RUN npm install
+# Copy the rest of the application
+COPY sources/ .
+EXPOSE 8081
+CMD ["npm", "start"]

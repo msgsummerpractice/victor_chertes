@@ -1,0 +1,33 @@
+== Exercise 4: Persisting Data using Volumes
+
+In this exercise, you will learn how to use Docker volumes (specifically bind mounts) to persist data outside of a container's lifecycle.
+
+=== Objectives
+
+* Understand that data inside a container is ephemeral by default.
+* Use bind mounts to link a directory on your host to a directory in the container.
+* Verify that data persists even after the container is deleted.
+
+=== Prerequisites
+
+* Completion of Exercise 1.
+
+=== Task
+
+1. Run a container and create a file inside it:
+   `docker run --name temp-container my-node-app sh -c "echo 'hello' > /usr/src/app/data.txt"`
+2. Remove the container:
+   `docker rm temp-container`
+3. Try to find the file on your host. It doesn't exist.
+4. Create a directory named `logs` on your host in this exercise folder.
+5. Run the container again, mounting the `logs` directory to `/usr/src/app/logs` in the container:
+   `docker run --name persistent-container -v $(pwd)/logs:/usr/src/app/logs my-node-app sh -c "echo 'Log entry' >> /usr/src/app/logs/app.log"`
+6. Remove the container:
+   `docker rm persistent-container`
+7. Check the `logs` directory on your host. The `app.log` file should still be there.
+
+== Learning Outcome
+
+* Understand the ephemeral nature of container storage.
+* Learn how to use the `-v` or `--volume` flag for bind mounts.
+* Understand how to persist application logs or databases using volumes.

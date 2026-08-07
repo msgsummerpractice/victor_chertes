@@ -1,0 +1,55 @@
+== Exercise 11: Troubleshooting and Image Inspection
+
+Getting a container to run is only half the battle. In this exercise, you will learn how to "look under the hood" to troubleshoot issues, inspect how images are built, and manage image versions correctly.
+
+=== Objectives
+
+* Master troubleshooting commands: `logs`, `inspect`, `top`, and `exec`.
+* Understand Image History and Layers.
+* Learn Tagging and Versioning best practices.
+
+=== Prerequisites
+
+* Completion of Exercise 10.
+
+=== Task
+
+1. **Build and Tag your image**:
+   Build the image from the previous exercise but give it a specific version tag:
+   `docker build -t node-app:1.0.0 .`
+   Also, tag it as `latest`:
+   `docker tag node-app:1.0.0 node-app:latest`
+
+2. **Inspect Image Layers**:
+   Use the `history` command to see how the image was built and how much space each layer takes:
+   `docker history node-app:1.0.0`
+
+3. **Run and Troubleshoot**:
+   Run the container in the background:
+   `docker run -d --name troubleshooting-demo -p 8081:8081 node-app:1.0.0`
+
+4. **Practice Inspection**:
+    * **Check Logs**: Follow the logs in real-time: `docker logs -f troubleshooting-demo`. (Press Ctrl+C to exit).
+    * **View Processes**: See what's running inside: `docker top troubleshooting-demo`.
+    * **Detailed Metadata**: Find the container's IP address using `inspect`:
+      `docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' troubleshooting-demo`
+    * **Explore Filesystem**: List the files inside the container's working directory:
+      `docker exec troubleshooting-demo ls -la /usr/src/app`
+
+5. **Resource Monitoring**:
+   Check the real-time resource usage (CPU/Memory) of the container:
+   `docker stats troubleshooting-demo`
+
+6. **Cleanup**:
+   Stop the container and remove the images. Try the `prune` command to clean up any dangling layers:
+   `docker system prune`
+
+=== Why Tagging Matters?
+
+Using `latest` in production is dangerous because it's non-deterministic. Always use Semantic Versioning (e.g., `1.2.3`) to ensure that you know exactly which code is running in your environment.
+
+== Learning Outcome
+
+* Ability to debug failing containers using standard Docker CLI tools.
+* Understanding of how Docker images are composed of layers.
+* Knowledge of how to monitor and manage container resources.

@@ -1,0 +1,69 @@
+= 🐧 WSL + Docker Setup (Windows)
+
+Use `wsl-ubuntu-install-docker.ps1` to bootstrap a Linux dev environment in WSL with Docker Engine.
+
+== What the Script Does
+
+* Checks for a pending Windows restart before changing optional features
+* Enables `VirtualMachinePlatform` if needed
+* Installs/updates WSL and sets WSL 2 as default
+* Writes `%USERPROFILE%\\.wslconfig` with these WSL 2 settings:
+** `memory=16GB`
+** `processors=4`
+** `networkingMode=mirrored`
+* Installs the `Ubuntu-26.04` distro if it is missing
+* Imports custom certificates from `certificates/*.crt` into Ubuntu and runs `update-ca-certificates`
+* Runs `apt-get update` and `apt-get -y upgrade` inside the distro on every execution
+* Installs or upgrades Docker Engine, Buildx, and the Compose plugin inside WSL
+* Creates `/etc/docker/daemon.json` with DNS servers `8.8.8.8` and `1.1.1.1`
+* Creates or updates a Linux user named `ubuntu`, adds it to the `sudo` and `docker` groups, and sets its password to `ubuntu`
+* Writes `/etc/wsl.conf` to enable `systemd` and make `ubuntu` the default WSL user
+* Restarts the distro and enables/starts the Docker service with `systemctl`
+
+IMPORTANT: Change the default `ubuntu` password after first login.
+
+If the script tells you a Windows restart is pending or required, restart Windows and then run the script again.
+
+== Prerequisites
+
+* PowerShell run as Administrator
+* Internet access for package downloads
+* Access to the Ubuntu image referenced by `$BaseDistro`
+
+== Run
+
+From repository root:
+
+[source,powershell]
+----
+Set-ExecutionPolicy -Scope Process Bypass
+& ".\resources\wsl-docker\wsl-ubuntu-install-docker.ps1"
+----
+
+From this folder (`resources/wsl-docker`):
+
+[source,powershell]
+----
+Set-ExecutionPolicy -Scope Process Bypass
+& ".\wsl-ubuntu-install-docker.ps1"
+----
+
+== Verify
+
+[source,powershell]
+----
+wsl -d Ubuntu-26.04 -- bash -lc "whoami"
+wsl -d Ubuntu-26.04 -- bash -lc "docker --version"
+wsl -d Ubuntu-26.04 -- bash -lc "docker compose version"
+wsl -d Ubuntu-26.04 -- bash -lc "systemctl is-active docker"
+wsl -d Ubuntu-26.04 -- bash -lc "cat /etc/docker/daemon.json"
+----
+
+Expected highlights:
+
+* `whoami` returns `ubuntu`
+* `systemctl is-active docker` returns `active`
+* `/etc/docker/daemon.json` contains the configured DNS servers
+
+If your machine does not expose `Ubuntu-26.04` in `wsl --list --online`, update both `$BaseDistro` and `$DistroName` in `wsl-ubuntu-install-docker.ps1` to an available Ubuntu image name.
+

@@ -1,0 +1,6 @@
+services:
+  # Implement the production-ready stack: nginx, node-app, and redis
+  # Requirements:
+  # 1. Add resource limits (CPU/Memory)
+  # 2. Use Docker Secrets for sensitive data
+  # 3. Add a 'redis-commander' service using a 'tools' profile

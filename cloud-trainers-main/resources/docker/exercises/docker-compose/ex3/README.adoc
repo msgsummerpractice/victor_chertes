@@ -1,0 +1,55 @@
+== Exercise 3: Development Workflow with Bind Mounts
+
+Rebuilding the image every time you change a line of code is slow. In this exercise, you will learn how to use **Bind Mounts** with Docker Compose to sync your local source code with the container, enabling a faster development workflow with hot-reloading.
+
+=== Objectives
+
+* Use bind mounts to sync local files to a container.
+* Use anonymous volumes to protect `node_modules`.
+* Implement hot-reloading using `nodemon`.
+
+=== Prerequisites
+
+* Completion of Exercise 2.
+
+=== Task
+
+1. Look at `sources/package.json`. A `dev` script has been added that uses `nodemon` to watch for file changes.
+2. Create a `docker-compose.yml` file that mounts the `sources` directory:
++
+[source,yaml]
+----
+services:
+  redis-server:
+    image: 'redis:alpine'
+
+  node-app:
+    build: .
+    command: npm run dev
+    ports:
+      - '8081:8081'
+    volumes:
+      - ./sources:/usr/src/app
+      - /usr/src/app/node_modules
+    environment:
+      - REDIS_HOST=redis-server
+    depends_on:
+      - redis-server
+----
+3. Start the application:
+   `docker compose up --build`
+4. Open `http://localhost:8081` in your browser.
+5. Now, modify `sources/index.js` (e.g., change the greeting message or add some text).
+6. Refresh the browser. Notice that the changes are applied **instantly** without rebuilding the image!
+7. Observe the terminal logs; you should see `nodemon` restarting the application when you save the file.
+
+=== Why two volumes?
+
+* `- ./sources:/usr/src/app`: This bind mount syncs your local code into the container.
+* `- /usr/src/app/node_modules`: This is an **anonymous volume**. It ensures that the `node_modules` folder *inside* the container (which was created during `docker build`) is not overwritten by your host's `node_modules` folder (which might be empty or contain incompatible binaries).
+
+== Learning Outcome
+
+* Learn how to enable "live coding" with Docker.
+* Understand how to combine bind mounts and anonymous volumes.
+* Learn how to override the default `CMD` using the `command` property in Compose.

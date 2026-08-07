@@ -1,0 +1,24 @@
+services:
+  # Define custom networks and assign services to them
+  # node-app should be on both 'frontend' and 'backend'
+  # redis-server should only be on 'backend'
+    redis-server:
+      image: 'redis:alpine'
+      networks:
+        - backend
+    
+    node-app:
+      build: .
+      ports:
+        - '8081:8081'
+      environment:
+        - REDIS_HOST=redis-server
+      networks:
+        - frontend
+        - backend
+      depends_on:
+        - redis-server
+
+networks:
+  frontend:
+  backend:

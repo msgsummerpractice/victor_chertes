@@ -1,0 +1,10 @@
+services:
+  redis-server:
+    image: 'redis:alpine'
+
+  node-app:
+    build: .
+    environment:
+      - REDIS_HOST=redis-server
+    depends_on:
+      - redis-server

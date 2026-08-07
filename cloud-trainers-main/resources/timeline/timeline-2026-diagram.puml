@@ -1,0 +1,54 @@
+@startgantt
+
+saturday are closed
+sunday are closed
+
+Project starts 2026-08-03
+
+-- Week 1 (Aug 3 - Aug 7) --
+
+[Docker Introduction] starts 2026-08-03 and lasts 1 day
+[Docker Introduction] is colored in LightSkyBlue
+note bottom
+  Held by Elod Molnar
+  Slides: Docker Introduction.pptx
+end note
+
+[Cloud Introduction] starts 2026-08-04 and lasts 1 day
+[Cloud Introduction] is colored in LightGreen
+note bottom
+  Held by Stefan Lelutiu
+  Cloud Fundamentals and Azure
+  Static Web Apps, Container Registry
+end note
+
+[Container Apps] starts 2026-08-05 and lasts 1 day
+[Container Apps] is colored in Gold
+note bottom
+  Held by Andrei Florea
+  Azure Container Apps
+  Exercises and Communication
+end note
+
+[Monitoring and Keyvault] starts 2026-08-06 and lasts 1 day
+[Monitoring and Keyvault] is colored in Salmon
+note bottom
+  Held by Stefan Lelutiu / Andrei Florea
+  Azure Monitor, Keyvault
+  Logs, Metrics, Dashboards
+end note
+
+[Self Learning] starts at [Monitoring and Keyvault]'s end and ends 2026-08-07
+note bottom
+  Held By: n/a (self learning)
+  exercises - summary of the week
+end note
+
+-- Week 2 (Aug 24 - Aug 28) --
+
+[Project] starts 2026-08-24 and ends 2026-08-28
+note bottom
+  Andrei Florea / Stefan Lelutiu / Elod Molnar
+  present as mentors
+end note
+@endgantt

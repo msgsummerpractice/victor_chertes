@@ -1,0 +1,21 @@
+services:
+  redis-server:
+    image: 'redis:alpine'
+    networks:
+      - backend
+
+  node-app:
+    build: .
+    ports:
+      - '8081:8081'
+    environment:
+      - REDIS_HOST=redis-server
+    networks:
+      - frontend
+      - backend
+    depends_on:
+      - redis-server
+
+networks:
+  frontend:
+  backend:

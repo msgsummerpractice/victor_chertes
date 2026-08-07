@@ -1,0 +1,15 @@
+# Stage 1: Build environment
+FROM node:lts-alpine3.23 AS builder
+WORKDIR /usr/src/app
+COPY sources/package.json ./
+RUN npm install
+COPY sources/ .
+
+# Stage 2: Production environment
+FROM node:lts-alpine3.23
+WORKDIR /usr/src/app
+# Copy only necessary files from the builder stage
+COPY --from=builder /usr/src/app/node_modules ./node_modules
+COPY --from=builder /usr/src/app .
+EXPOSE 8081
+CMD ["npm", "start"]

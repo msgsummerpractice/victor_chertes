@@ -1,0 +1,62 @@
+== Exercise 5: Build Customization (Args and Context)
+
+Sometimes your `Dockerfile` is not in the same directory as your `docker-compose.yml`, or you need to pass specific information during the build process. In this exercise, you will learn how to customize the build process in Docker Compose.
+
+=== Objectives
+
+* Use `context` and `dockerfile` to specify the build location.
+* Use `args` to pass build arguments to the `Dockerfile`.
+* Combine multi-stage builds with Compose.
+
+=== Prerequisites
+
+* Completion of Exercise 8 and 9 (from the Docker series).
+
+=== Task
+
+1. Modify the `Dockerfile` in this directory to accept a build argument `APP_COLOR`:
++
+[source,dockerfile]
+----
+FROM node:lts-alpine3.23
+WORKDIR /usr/src/app
+ARG APP_COLOR=white
+ENV BG_COLOR=${APP_COLOR}
+COPY sources/package.json ./
+RUN npm install
+COPY sources/ .
+CMD ["npm", "start"]
+----
+2. Modify `sources/index.js` to use the `BG_COLOR` environment variable in the response (e.g., wrap the output in a `<div style="background-color: ...">`).
+3. Create a `docker-compose.yml` that passes the `APP_COLOR` argument:
++
+[source,yaml]
+----
+services:
+  redis-server:
+    image: 'redis:alpine'
+
+  node-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - APP_COLOR=lightblue
+    ports:
+      - '8081:8081'
+    environment:
+      - REDIS_HOST=redis-server
+    depends_on:
+      - redis-server
+----
+4. Build and start the application:
+   `docker compose up --build -d`
+5. Verify the background color by visiting `http://localhost:8081`.
+6. Clean up:
+   `docker compose down`
+
+== Learning Outcome
+
+* Learn how to pass variables to the `docker build` process via Compose.
+* Understand the difference between `environment` (runtime) and `build.args` (build-time).
+* Learn how to organize your project by specifying custom paths for Dockerfiles.
